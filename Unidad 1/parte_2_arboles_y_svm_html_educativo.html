@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tipos de algoritmos en relación con el aprendizaje automático — Parte 2</title>
+  <!-- MISMO CSS QUE LA PARTE 1 -->
+  <style>
+    :root {
+      --fg: #111827; /* slate-900 */
+      --muted: #4b5563; /* gray-600 */
+      --bg: #ffffff;
+      --brand: #0ea5e9; /* sky-500 */
+      --brand-ink: #075985; /* sky-800 */
+      --card: #f8fafc; /* slate-50 */
+      --code: #111827; /* slate-900 */
+      --border: #e5e7eb; /* gray-200 */
+      /* accent */
+      --h1: #1d4ed8; /* blue-700 */
+      --h2: #6d28d9; /* violet-700 */
+      --h3: #0284c7; /* sky-600 */
+      --section-underline: #dbeafe; /* blue-100 */
+      --divider: #e5e7eb; /* gray-200 */
+    }
+    html, body { background: var(--bg); color: var(--fg); font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+    .page { max-width: 920px; margin: auto; padding: 2rem 1.25rem 6rem; line-height: 1.65; }
+    header h1 { font-size: clamp(1.6rem, 2.5vw + 1rem, 2.4rem); margin: 0 0 .25rem; color: var(--h1); letter-spacing: -0.01em; }
+    header p.lead { color: var(--muted); margin: 0 0 1.25rem; }
+    .breadcrumbs { font-size: .9rem; color: var(--muted); margin-bottom: .5rem; }
+    .breadcrumbs a { color: var(--muted); text-decoration: none; }
+    nav.toc { background: var(--card); border: 1px solid var(--border); border-radius: .75rem; padding: 1rem; margin: 1.25rem 0 2rem; }
+    nav.toc strong { display: block; margin-bottom: .5rem; }
+    nav.toc a { display: block; color: var(--brand-ink); text-decoration: none; padding: .25rem 0; }
+    h2 { margin-top: 2.25rem; font-size: 1.6rem; color: var(--h2); padding-bottom: .35rem; border-bottom: 1px solid var(--section-underline); }
+    h3 { margin-top: 1.5rem; font-size: 1.25rem; color: var(--h3); }
+    .page section + section { border-top: 1px solid var(--divider); margin-top: 2.25rem; padding-top: 2rem; }
+    .note { background: #ecfeff; border-left: 4px solid var(--brand); padding: .75rem 1rem; border-radius: .5rem; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: .75rem; padding: 1rem; }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: .95em; }
+    pre { background: #0b1020; color: #e2e8f0; border-radius: .5rem; padding: 1rem; overflow: auto; }
+    .pill { display: inline-block; border: 1px solid var(--border); border-radius: 999px; padding: .1rem .6rem; font-size: .875rem; color: var(--muted); background: #fff; }
+    details { border: 1px solid var(--border); border-radius: .5rem; padding: .75rem 1rem; background: #fff; }
+    details + details { margin-top: .75rem; }
+    footer { margin-top: 3rem; font-size: .9rem; color: var(--muted); }
+    .top { position: fixed; right: 1rem; bottom: 1rem; background: var(--brand); color: #fff; border-radius: 999px; padding: .6rem .8rem; text-decoration: none; box-shadow: 0 6px 18px rgba(2,132,199,.3); }
+    figure.media { margin: 1rem 0 1.25rem; }
+    figure.media img { max-width: 100%; height: auto; display: block; border-radius: .5rem; }
+    figure.media figcaption { margin-top: .5rem; text-align: center; color: var(--muted); font-size: .95rem; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header id="top">
+      <div class="breadcrumbs">Sistemas de Aprendizaje Automático → Tema 2 → <span class="pill">Parte 2</span></div>
+      <h1>Clasificación clásica: Árboles de decisión y SVM lineal</h1>
+    </header>
+
+    <nav class="toc" aria-label="Tabla de contenidos">
+      <strong>Índice de la página</strong>
+      <a href="#objetivos">1. Objetivos de aprendizaje</a>
+      <a href="#arboles">2. Árboles de decisión</a>
+      <a href="#svm-lineal">3. Máquinas de Vectores de Soporte (SVM) — Lineal</a>
+      <a href="#autoevaluacion">4. Autoevaluación</a>
+    </nav>
+
+    <section id="objetivos" class="card">
+      <h2>1. Objetivos de aprendizaje</h2>
+      <ul>
+        <li>Comprender la idea básica de los <strong>árboles de decisión</strong> para clasificación.</li>
+        <li>Reconocer el concepto de <strong>margen máximo</strong> en SVM lineal y el papel de los <em>vectores soporte</em>.</li>
+        <li>Distinguir <em>ventajas</em> y <em>limitaciones</em> de ambos enfoques a alto nivel.</li>
+      </ul>
+    </section>
+
+    <section id="arboles">
+      <h2>2. Árboles de decisión</h2>
+      <p>
+        Modelo supervisado que divide el espacio de características mediante reglas simples (preguntas sobre atributos) para 
+        asignar una clase en las hojas. Cada división intenta separar mejor las clases.
+      </p>
+      <h3>2.1. Idea y componentes</h3>
+      <ul>
+        <li><strong>Nodos internos</strong>: reglas de decisión que particionan los datos.</li>
+        <li><strong>Hojas</strong>: etiqueta de clase asignada tras las reglas aplicadas.</li>
+        <li><strong>Crecimiento / complejidad</strong>: árboles más profundos capturan más detalle pero pueden sobreajustar.</li>
+      </ul>
+      <h3>2.2. Ventajas y limitaciones</h3>
+      <ul>
+        <li><em>Interpretables</em> y fáciles de explicar (reglas comprensibles).</li>
+        <li><em>Limitación</em>: si crecen demasiado, tienden al <em>sobreajuste</em>; se controla con profundidad/poda.</li>
+      </ul>
+
+      <!-- Sustituye la ruta por tu PNG en GitHub -->
+      <figure class="media">
+        <picture>
+          <img src="../img/parte2-arbol-decision.JPG" alt="Problema de árbol de decisión" width="1200" height="700" loading="lazy" decoding="async">
+        </picture>
+        <figcaption>Figura 1 — Problema Árbol de decisión.</figcaption>
+      </figure>
+      <figure class="media">
+        <picture>
+          <img src="../img/parte2-arbol-decision - Ejemplo .JPG" alt="Ilustración árbol de decisión" width="900" height="700" loading="lazy" decoding="async">
+        </picture>
+        <figcaption>Figura 2 — Árbol de decisión.</figcaption>
+      </figure>
+    </section>
+
+    <section id="svm-lineal">
+      <h2>3. Máquinas de Vectores de Soporte (SVM) — Lineal</h2>
+      <p>
+        Clasificador que busca un <strong>hiperplano</strong> que separe las clases con el <strong>máximo margen</strong>. 
+        Los <em>vectores soporte</em> son las observaciones que definen ese margen.
+      </p>
+      <h3>3.1. Idea</h3>
+      <ul>
+        <li>Separación lineal mediante un hiperplano en el espacio de características.</li>
+        <li>Maximizar la distancia a los puntos más cercanos de cada clase (margen máximo).</li>
+      </ul>
+      <h3>3.2. Ventajas y limitaciones</h3>
+      <ul>
+        <li><em>Eficaz</em> en espacios de alta dimensión y robusto a sobreajuste con un margen bien definido.</li>
+        <li><em>Limitación</em>: la versión <em>lineal</em> solo separa correctamente si las clases son linealmente separables.</li>
+      </ul>
+
+      <!-- Sustituye la ruta por tu PNG en GitHub -->
+      <figure class="media">
+        <picture>
+          <img src="../img/parte2-svm-lineal.png" alt="Ejemplo de SVM lineal con margen y vectores soporte" width="1200" height="700" loading="lazy" decoding="async">
+        </picture>
+        <figcaption>Figura 2 — SVM lineal (sustituye por tu PNG).</figcaption>
+      </figure>
+    </section>
+
+    <section id="autoevaluacion" class="card">
+      <h2>4. Autoevaluación</h2>
+      <details>
+        <summary>(1) ¿Qué riesgo aparece al aumentar en exceso la profundidad de un árbol?</summary>
+        <p>El <em>sobreajuste</em>: memoriza ruido y pierde capacidad de generalización.</p>
+      </details>
+      <details>
+        <summary>(2) ¿Qué puntos determinan el margen en SVM lineal?</summary>
+        <p>Los <em>vectores soporte</em>, que son los más cercanos al hiperplano separador.</p>
+      </details>
+    </section>
+
+    <section id="lecturas">
+      <h2>5. Lecturas y recursos</h2>
+      <ul>
+        <li>Apuntes del tema — apartados 3 (Árboles) y 4 (SVM).</li>
+        <li>Documentación de scikit-learn sobre árboles de decisión y SVM (para ampliar).</li>
+      </ul>
+    </section>
+
+    <footer>
+      <p>© 2025 — Material docente DigiTech. Jose Miguel Martínez.</p>
+    </footer>
+  </div>
+  <a class="top" href="#top" aria-label="Volver arriba">↑</a>
+</body>
+</html>
