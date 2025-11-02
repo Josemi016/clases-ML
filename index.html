@@ -1,4 +1,66 @@
-<!doctype html><meta charset="utf-8">
-<title>Clases ML</title>
-<meta http-equiv="refresh" content="0; url=Unidad%201/unidad2.html">
-<p>Redirigiendo a <a href="Unidad%1/unidad2.html">Unidad 1</a>…</p>
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Clases de ML — Portada</title>
+  <!-- Mismo CSS base que las Partes 1 y 2 -->
+  <style>
+    :root {
+      --fg: #111827; --muted: #4b5563; --bg: #ffffff;
+      --brand: #0ea5e9; --brand-ink: #075985; --card: #f8fafc;
+      --code: #111827; --border: #e5e7eb;
+      --h1: #1d4ed8; --h2: #6d28d9; --h3: #0284c7;
+      --section-underline: #dbeafe; --divider: #e5e7eb;
+    }
+    html, body { background: var(--bg); color: var(--fg); font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+    .page { max-width: 980px; margin: auto; padding: 2rem 1.25rem 4rem; line-height: 1.65; }
+    header h1 { font-size: clamp(1.7rem, 2.6vw + 1rem, 2.6rem); margin: 0 0 .25rem; color: var(--h1); letter-spacing: -0.01em; }
+    header p.lead { color: var(--muted); margin: 0 0 1.25rem; }
+    .breadcrumbs { font-size: .9rem; color: var(--muted); margin-bottom: .5rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-top: 1.25rem; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: .9rem; padding: 1rem 1.1rem; }
+    .card h3 { margin: 0 0 .25rem; color: var(--h2); font-size: 1.2rem; }
+    .card p { margin: .25rem 0 .75rem; color: var(--muted); }
+    .card a { display: inline-block; color: #fff; background: var(--h2); padding: .5rem .8rem; border-radius: .55rem; text-decoration: none; }
+    nav.toc { background: var(--card); border: 1px solid var(--border); border-radius: .75rem; padding: 1rem; margin: 1.25rem 0 2rem; }
+    nav.toc strong { display: block; margin-bottom: .5rem; }
+    nav.toc a { display: block; color: var(--brand-ink); text-decoration: none; padding: .25rem 0; }
+    footer { margin-top: 2.25rem; font-size: .9rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="breadcrumbs">Sistemas de Aprendizaje Automático</div>
+      <h1>Clases de ML — Portada</h1>
+      <p class="lead">Accede a cada unidad del temario. Enlaces pensados para GitHub Pages.</p>
+    </header>
+
+    <section>
+      <nav class="toc" aria-label="Índice">
+        <strong>Unidades</strong>
+        <a href="Unidad%201/unidad2.html">Parte 1 — Tipos de algoritmos (Regresión)</a>
+        <a href="Unidad%201/unidad2_1.html">Parte 2 — Árboles de decisión y SVM lineal</a>
+      </nav>
+
+      <div class="grid">
+        <article class="card">
+          <h3>Parte 1</h3>
+          <p>Taxonomía y modelos supervisados: regresión lineal y logística.</p>
+          <a href="Unidad%201/unidad2.html" aria-label="Abrir Parte 1">Abrir Parte 1</a>
+        </article>
+        <article class="card">
+          <h3>Parte 2</h3>
+          <p>Clasificación clásica: Árboles de decisión y SVM lineal.</p>
+          <a href="Unidad%201/unidad2_1.html" aria-label="Abrir Parte 2">Abrir Parte 2</a>
+        </article>
+      </div>
+    </section>
+
+    <footer>
+      <p>© 2025 — Material docente DigiTech. Jose Miguel Martínez.</p>
+    </footer>
+  </div>
+</body>
+</html>
