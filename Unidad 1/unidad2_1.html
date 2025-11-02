@@ -59,6 +59,7 @@
       <strong>Índice de la página</strong>
       <a href="#objetivos">1. Objetivos de aprendizaje</a>
       <a href="#arboles">2. Árboles de decisión</a>
+      <a href="#arboles-tipos">2.3. Tipos de árboles más utilizados</a>
       <a href="#svm-lineal">3. Máquinas de Vectores de Soporte (SVM) — Lineal</a>
       <a href="#autoevaluacion">4. Autoevaluación</a>
     </nav>
@@ -89,6 +90,73 @@
         <li><em>Interpretables</em> y fáciles de explicar (reglas comprensibles).</li>
         <li><em>Limitación</em>: si crecen demasiado, tienden al <em>sobreajuste</em>; se controla con profundidad/poda.</li>
       </ul>
+
+      <!-- 2.3 NUEVA SUBSECCIÓN -->
+      <h3 id="arboles-tipos">2.3. Tipos de árboles más utilizados</h3>
+      <dl>
+        <dt><strong>CART (Classification and Regression Trees)</strong></dt>
+        <dd>
+          Árbol binario que divide con criterios como <em>Gini</em> (clasificación) o <em>MSE</em> (regresión) y luego <em>poda</em> para controlar la complejidad.
+          <ul>
+            <li><em>Ejemplo 1:</em> decidir <strong>aprobado/denegado</strong> en solicitudes de crédito.</li>
+            <li><em>Ejemplo 2:</em> estimar el <strong>precio</strong> de una vivienda (regresión).</li>
+          </ul>
+        </dd>
+
+        <dt><strong>ID3 (Iterative Dichotomiser 3)</strong></dt>
+        <dd>
+          Elige en cada nodo el atributo con mayor <em>ganancia de información</em> (entropía). Pensado para variables <em>categóricas</em> y sin poda incorporada.
+          <ul>
+            <li><em>Ejemplo 1:</em> clasificar <strong>emails</strong> por categorías con variables binarias.</li>
+            <li><em>Ejemplo 2:</em> el clásico de <strong>jugar al tenis</strong> según el clima.</li>
+          </ul>
+        </dd>
+
+        <dt><strong>C4.5 y C5.0</strong></dt>
+        <dd>
+          Sucesores de ID3. <em>C4.5</em> usa <em>ratio de ganancia</em>, maneja <em>continuas</em> con umbrales, <em>valores perdidos</em> y <em>poda</em>. <em>C5.0</em> (posterior) optimiza memoria/tiempo e introduce opciones como <em>boosting</em>.
+          <ul>
+            <li><em>Ejemplo 1:</em> predicción de <strong>churn</strong> en telecomunicaciones (variables mixtas).</li>
+            <li><em>Ejemplo 2:</em> <strong>diagnóstico</strong> con atributos continuos y datos faltantes.</li>
+          </ul>
+        </dd>
+
+        <dt><strong>CHAID (Chi-squared Automatic Interaction Detection)</strong></dt>
+        <dd>
+          Árbol con <em>ramas múltiples</em> que selecciona divisiones mediante <em>tests chi-cuadrado</em> (con correcciones) y detiene por <em>significación</em>. Muy usado en <em>segmentación</em>.
+          <ul>
+            <li><em>Ejemplo 1:</em> segmentar <strong>clientes</strong> por probabilidad de respuesta.</li>
+            <li><em>Ejemplo 2:</em> agrupar <strong>perfiles</strong> en encuestas de opinión.</li>
+          </ul>
+        </dd>
+
+        <dt><strong>Decision Stump</strong></dt>
+        <dd>
+          Árbol de <em>un solo nivel</em> (una regla/umbral). Suele usarse como <em>aprendiz débil</em> en <em>boosting</em> o como baseline muy interpretable.
+          <ul>
+            <li><em>Ejemplo 1:</em> <strong>AdaBoost</strong> para detección rápida de rostros.</li>
+            <li><em>Ejemplo 2:</em> regla simple para <strong>marcar</strong> transacciones según un umbral.</li>
+          </ul>
+        </dd>
+
+        <dt><strong>M5 (árboles de modelos)</strong></dt>
+        <dd>
+          En lugar de una etiqueta/constante en la hoja, ajusta un <em>modelo lineal</em> local. Combina particiones con regresiones por hoja; muy útil para <em>salidas continuas</em>.
+          <ul>
+            <li><em>Ejemplo 1:</em> estimar <strong>consumo energético</strong> a partir de variables continuas.</li>
+            <li><em>Ejemplo 2:</em> predecir <strong>MPG</strong> de vehículos con muchos atributos.</li>
+          </ul>
+        </dd>
+
+        <dt><strong>Conditional Decision Trees (Árboles de inferencia condicional)</strong></dt>
+        <dd>
+          Particionado <em>no sesgado</em> que usa <em>tests estadísticos</em> para elegir divisiones y un <em>criterio de parada</em> (en vez de poda). Reduce el sesgo hacia variables con muchos cortes.
+          <ul>
+            <li><em>Ejemplo 1:</em> modelos <strong>clínicos</strong> donde interesa una selección de variables sin sesgo.</li>
+            <li><em>Ejemplo 2:</em> <strong>ecología</strong>: presencia/ausencia de especie con covariables mixtas.</li>
+          </ul>
+        </dd>
+      </dl>
 
       <!-- Sustituye la ruta por tu PNG en GitHub -->
       <figure class="media">
