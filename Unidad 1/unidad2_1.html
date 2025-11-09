@@ -131,45 +131,18 @@
       <dl>
         <dt><strong>ID3</strong></dt>
         <dd>Elige el atributo con <em>mayor ganancia de información</em> (basada en entropía). Históricamente para variables categóricas.</dd>
+        <d2>Entropía: Mide el grado de desinformación de un sistema</d2>
+        <figure class="media">
+        <img src="../img/entropía.JPG" alt="Entropía" width="1200" height="640" loading="lazy" decoding="async">
+        <figcaption>Figura — Entropía.</figcaption>
+      </figure>
 
         <dt><strong>C4.5</strong></dt>
-        <dd>Extiende ID3: maneja continuas con umbrales, valores perdidos y usa <em>proporción de ganancia</em> para evitar sesgos hacia atributos con muchos valores. Incluye <em>poda</em>.</dd>
+        <dd>El C4.5 se basa en el ID3, por lo tanto, la estructura principal de ambos métodos es la misma.  El C4.5 construye un árbol de decisión mediante el algoritmo "divide y vencerás" y evalúa la información en cada caso utilizando los criterios de  Entropía, Ganancia o proporción de ganancia, según sea el caso. Incluye <em>poda</em>.</dd>
 
         <dt><strong>CART</strong></dt>
         <dd>Árbol binario. Usa <em>impureza de Gini</em> para clasificación y <em>MSE</em> para regresión; aplica <em>poda por complejidad</em>.</dd>
       </dl>
-
-      <h3>4.2. Métodos de selección de atributos (con ejemplo numérico)</h3>
-      <p>Supongamos un conjunto de 20 ejemplos con objetivo binario: 12 <code>sí</code> y 8 <code>no</code>.</p>
-
-      <h4>a) Ganancia de información (ID3)</h4>
-      <pre><code>Entropía del conjunto S:
-p_sí = 12/20 = 0.6
-p_no = 8/20 = 0.4
-H(S) = −(0.6·log₂0.6 + 0.4·log₂0.4) ≈ 0.971 bits
-
-Atributo Color:
-- Rojo: 8 elementos (6 sí, 2 no) → H(Rojo) ≈ 0.811
-- Azul: 12 elementos (6 sí, 6 no) → H(Azul) = 1.0
-H(S|Color) = (8/20)·0.811 + (12/20)·1.0 ≈ 0.925
-
-Ganancia de información:
-IG(Color) = H(S) − H(S|Color) ≈ 0.971 − 0.925 = 0.046 bits
-      </code></pre>
-
-      <h4>b) Proporción de ganancia (C4.5)</h4>
-      <pre><code>SplitInfo(Color) = −[(8/20)·log₂(8/20) + (12/20)·log₂(12/20)] ≈ 0.971
-Gain Ratio = IG / SplitInfo ≈ 0.046 / 0.971 ≈ 0.048
-      </code></pre>
-
-      <h4>c) Índice Gini (CART)</h4>
-      <pre><code>Gini(S) = 1 − (0.6² + 0.4²) = 0.48
-Gini(Rojo) = 1 − (0.75² + 0.25²) = 0.375
-Gini(Azul) = 1 − (0.5² + 0.5²) = 0.5
-Gini tras el split = (8/20)·0.375 + (12/20)·0.5 = 0.45
-Mejora Gini = 0.48 − 0.45 = 0.03
-      </code></pre>
-
       <figure class="media">
         <img src="../img/criterios-seleccion.png" alt="Ilustración de entropía, ganancia y Gini" width="1200" height="640" loading="lazy" decoding="async">
         <figcaption>Figura — Deja aquí una lámina con fórmulas y comparativa visual.</figcaption>
@@ -224,6 +197,10 @@ H(S) ≈ −(0.6429·log₂0.6429 + 0.3571·log₂0.3571) ≈ 0.94 bits
 Pred Pos   →   TP       FP
 Pred Neg   →   FN       TN
       </code></pre>
+      <figure class="media">
+        <img src="../img/matriz-confusion.JPG" alt="Matriz de confusion" width="1100" height="520" loading="lazy" decoding="async">
+        <figcaption>Figura — Matriz de confusion.</figcaption>
+      </figure>
       <ul>
         <li><strong>TP</strong> (verdadero positivo): positivo bien clasificado.</li>
         <li><strong>FP</strong> (falso positivo): negativo clasificado como positivo.</li>
@@ -233,8 +210,8 @@ Pred Neg   →   FN       TN
       <div class="note">A partir de la matriz se calculan métricas como <em>exactitud</em>, <em>precisión</em>, <em>recobrado (recall)</em> y <em>F1</em>.</div>
 
       <figure class="media">
-        <img src="../img/matriz-confusion.png" alt="Matriz de confusión con TP, FP, FN, TN" width="1100" height="560" loading="lazy" decoding="async">
-        <figcaption>Figura — Deja aquí tu imagen de matriz de confusión.</figcaption>
+        <img src="../img/matriz-confusion-formulas.JPG" alt="Matriz de confusión con TP, FP, FN, TN" width="1100" height="560" loading="lazy" decoding="async">
+        <figcaption>Figura — Formulas Matriz Confusión.</figcaption>
       </figure>
     </section>
 
