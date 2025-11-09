@@ -149,48 +149,9 @@
       </figure>
     </section>
 
-    <!-- 5 -->
-    <section id="entropia-validacion">
-      <h2>5. Entropía + Entrenamiento y Validación</h2>
-
-      <h3>5.1. Entropía (definición y ejemplo)</h3>
-      <p>La <strong>entropía</strong> mide la impureza/mezcla de clases:</p>
-      <pre><code>H(S) = − Σ pᵢ · log₂ pᵢ
-Ejemplo: 9 “sí” y 5 “no” → p_sí = 9/14, p_no = 5/14
-H(S) ≈ −(0.6429·log₂0.6429 + 0.3571·log₂0.3571) ≈ 0.94 bits
-      </code></pre>
-
-      <h3>5.2. Entrenamiento y validación (flujo básico)</h3>
-      <ol>
-        <li>Divide en <strong>train/test</strong> (por ejemplo, 80/20).</li>
-        <li><strong>Entrena</strong> el árbol en train (ajusta profundidad, min_samples_leaf, etc.).</li>
-        <li><strong>Valida</strong> con test: exactitud, F1, MAE (si es regresión), etc.</li>
-      </ol>
-      <div class="note">Ejemplo práctico: construye un árbol para predecir si un cliente compra (sí/no) y evalúalo con exactitud y F1 sobre el conjunto de test.</div>
-
-      <figure class="media">
-        <img src="../img/entrenamiento-validacion.png" alt="Diagrama entrenamiento vs validación" width="1200" height="620" loading="lazy" decoding="async">
-        <figcaption>Figura — Espacio para tu diagrama de flujo de entrenamiento/validación.</figcaption>
-      </figure>
-    </section>
-
-    <!-- 6 -->
-    <section id="cross-validation" class="card">
-      <h2>6. Validación cruzada (k-fold)</h2>
-      <p>La <strong>validación cruzada k-fold</strong> reparte los datos en <em>k</em> pliegues; se entrena con k−1 y se valida con el restante, repitiendo k veces y promediando métricas.</p>
-      <ul>
-        <li><strong>Cuándo usarla:</strong> para estimar rendimiento más estable y elegir hiperparámetros (profundidad, min_samples_split, etc.).</li>
-        <li><strong>Valores típicos:</strong> k = 5 o 10.</li>
-      </ul>
-      <figure class="media">
-        <img src="../img/kfold.png" alt="Esquema de validación cruzada k-fold" width="1100" height="520" loading="lazy" decoding="async">
-        <figcaption>Figura — Añade aquí tu gráfico de k pliegues.</figcaption>
-      </figure>
-    </section>
-
-    <!-- 7 -->
+        <!-- 5 -->
     <section id="matriz-confusion">
-      <h2>7. Matriz de confusión (definición)</h2>
+      <h2>5. Matriz de confusión (definición)</h2>
       <p>Tabla 2×2 para problemas binarios (extensible a multicategoría) que relaciona las <em>predicciones</em> del modelo con las <em>etiquetas reales</em>:</p>
       <pre><code>                 Clase real
                Pos      Neg
@@ -213,7 +174,26 @@ Pred Neg   →   FN       TN
         <img src="../img/matriz-confusion-formulas.JPG" alt="Matriz de confusión con TP, FP, FN, TN" width="1100" height="560" loading="lazy" decoding="async">
         <figcaption>Figura — Formulas Matriz Confusión.</figcaption>
       </figure>
+      <figure class="media">
+        <img src="../img/matriz-confusion-formulas2.JPG" alt="Interpretación Fórmulas" width="1100" height="560" loading="lazy" decoding="async">
+        <figcaption>Figura — Interpretación Fórmulas.</figcaption>
+      </figure>
     </section>
+    
+    <!-- 6 -->
+    <section id="cross-validation" class="card">
+      <h2>6. Validación cruzada (k-fold)</h2>
+      <p>La <strong>validación cruzada k-fold</strong> reparte los datos en <em>k</em> pliegues; se entrena con k−1 y se valida con el restante, repitiendo k veces y promediando métricas.</p>
+      <ul>
+        <li><strong>Cuándo usarla:</strong> para estimar rendimiento más estable y elegir hiperparámetros (profundidad, min_samples_split, etc.).</li>
+        <li><strong>Valores típicos:</strong> k = 5 o 10.</li>
+      </ul>
+      <figure class="media">
+        <img src="../img/kfold.png" alt="Esquema de validación cruzada k-fold" width="1100" height="520" loading="lazy" decoding="async">
+        <figcaption>Figura — Añade aquí tu gráfico de k pliegues.</figcaption>
+      </figure>
+    </section>
+
 
     <footer>
       <p>© 2025 — Material docente DigiTech. Jose Miguel Martínez.</p>
