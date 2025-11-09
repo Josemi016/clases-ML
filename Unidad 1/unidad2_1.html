@@ -58,7 +58,7 @@
 
     <nav class="toc" aria-label="Tabla de contenidos">
       <strong>Índice de la página</strong>
-      <a href="#que-son">1. ¿Qué son y para qué se utilizan?</a>
+      <a href="#definicion">1. ¿Qué son y para qué se utilizan?</a>
       <a href="#ventajas">2. Ventajas y desventajas</a>
       <a href="#representacion">3. Representación (nodos, hojas, ramas)</a>
       <a href="#tipos-y-criterios">4. ID3, C4.5, CART y criterios de selección</a>
@@ -68,7 +68,7 @@
     </nav>
 
     <!-- 1 -->
-    <section id="que-son">
+    <section id="definicion">
       <h2>1. ¿Qué son y para qué se utilizan?</h2>
       <p>Un <strong>árbol de decisión</strong> es un modelo supervisado que aprende <em>reglas en forma de preguntas</em> sobre las características para clasificar ejemplos o predecir valores.</p>
       <ul>
@@ -77,6 +77,20 @@
       </ul>
       <figure class="media">
         <img src="../img/parte2-arbol-decision.JPG" alt="Tabla de ejemplo - Problema Jugar al Tenis" width="1200" height="600" loading="lazy" decoding="async">
+        <figcaption>Problema Árbol de Decisión.</figcaption>
+    </section>
+    <section id="representacion">
+      <h2>3. Representación (nodos, hojas, ramas)</h2>
+      <ul>
+        <li><strong>Nodo interno:</strong> pregunta/regla (p. ej., <code>edad &lt; 30</code>).</li>
+        <li><strong>Ramas:</strong> resultados de la regla (sí/no o múltiples valores).</li>
+        <li><strong>Hoja:</strong> decisión final (clase) o valor numérico (regresión).</li>
+      </ul>
+      <div class="note">Consejo: limita <em>profundidad</em>, tamaño mínimo de hojas o usa <em>poda</em> para controlar complejidad.</div>
+      <figure class="media">
+        <img src="../img/representacion-arbol.png" alt="Ejemplo con nodos, ramas y hojas" width="1100" height="600" loading="lazy" decoding="async">
+        <figcaption>Figura — Diagrama sencillo de un árbol con etiquetas.</figcaption>
+      </figure>
         <img src="../img/parte2-arbol-decision - Ejemplo .JPG" alt="Esquema conceptual de árbol de decisión" width="1200" height="600" loading="lazy" decoding="async">
         <figcaption>Definición Árbol de Decisión.</figcaption>
       </figure>
@@ -110,21 +124,6 @@
         </a>
       </p>
 
-    </section>
-
-    <!-- 3 -->
-    <section id="representacion">
-      <h2>3. Representación (nodos, hojas, ramas)</h2>
-      <ul>
-        <li><strong>Nodo interno:</strong> pregunta/regla (p. ej., <code>edad &lt; 30</code>).</li>
-        <li><strong>Ramas:</strong> resultados de la regla (sí/no o múltiples valores).</li>
-        <li><strong>Hoja:</strong> decisión final (clase) o valor numérico (regresión).</li>
-      </ul>
-      <div class="note">Consejo: limita <em>profundidad</em>, tamaño mínimo de hojas o usa <em>poda</em> para controlar complejidad.</div>
-      <figure class="media">
-        <img src="../img/representacion-arbol.png" alt="Ejemplo con nodos, ramas y hojas" width="1100" height="600" loading="lazy" decoding="async">
-        <figcaption>Figura — Diagrama sencillo de un árbol con etiquetas.</figcaption>
-      </figure>
     </section>
 
     <!-- 4 -->
