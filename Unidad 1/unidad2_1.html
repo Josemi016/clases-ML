@@ -59,8 +59,8 @@
     <nav class="toc" aria-label="Tabla de contenidos">
       <strong>Índice de la página</strong>
       <a href="#definicion">1. ¿Qué son y para qué se utilizan?</a>
+      <a href="#representacion">2. Representación (nodos, hojas, ramas)</a>
       <a href="#ventajas">2. Ventajas y desventajas</a>
-      <a href="#representacion">3. Representación (nodos, hojas, ramas)</a>
       <a href="#tipos-y-criterios">4. ID3, C4.5, CART y criterios de selección</a>
       <a href="#entropia-validacion">5. Entropía + Entrenamiento y Validación</a>
       <a href="#cross-validation">6. Validación cruzada (k-fold)</a>
@@ -69,7 +69,7 @@
 
     <!-- 1 -->
     <section id="definicion">
-      <h2>1. ¿Qué son y para qué se utilizan?</h2>
+      <h2>1. Definición ¿Qué son y para qué se utilizan?</h2>
       <p>Un <strong>árbol de decisión</strong> es un modelo supervisado que aprende <em>reglas en forma de preguntas</em> sobre las características para clasificar ejemplos o predecir valores.</p>
       <ul>
         <li><strong>Clasificación:</strong> aprobar/denegar un crédito, detectar spam, diagnosticar una enfermedad.</li>
@@ -80,7 +80,7 @@
         <figcaption>Problema Árbol de Decisión.</figcaption>
     </section>
     <section id="representacion">
-      <h2>3. Representación (nodos, hojas, ramas)</h2>
+      <h2>2. Representación (nodos, hojas, ramas)</h2>
       <ul>
         <li><strong>Nodo interno:</strong> pregunta/regla (p. ej., <code>edad &lt; 30</code>).</li>
         <li><strong>Ramas:</strong> resultados de la regla (sí/no o múltiples valores).</li>
@@ -88,17 +88,14 @@
       </ul>
       <div class="note">Consejo: limita <em>profundidad</em>, tamaño mínimo de hojas o usa <em>poda</em> para controlar complejidad.</div>
       <figure class="media">
-        <img src="../img/representacion-arbol.png" alt="Ejemplo con nodos, ramas y hojas" width="1100" height="600" loading="lazy" decoding="async">
-        <figcaption>Figura — Diagrama sencillo de un árbol con etiquetas.</figcaption>
-      </figure>
         <img src="../img/parte2-arbol-decision - Ejemplo .JPG" alt="Esquema conceptual de árbol de decisión" width="1200" height="600" loading="lazy" decoding="async">
-        <figcaption>Definición Árbol de Decisión.</figcaption>
+        <figcaption>Figura — Diagrama sencillo de un árbol con etiquetas</figcaption>
       </figure>
     </section>
 
     <!-- 2 -->
     <section id="ventajas" class="card">
-      <h2>2. Ventajas y desventajas</h2>
+      <h2>3. Ventajas y desventajas</h2>
       <ul>
         <li><strong>Ventajas:</strong> interpretables, no requieren demasiada preparación de datos, manejan variables numéricas y categóricas, capturan interacciones y no linealidades.</li>
         <li><strong>Desventajas:</strong> sensibles a pequeñas variaciones en datos, riesgo de <em>sobreajuste</em> si son muy profundos, cortes ortogonales (ejes) que a veces no capturan fronteras complejas.</li>
