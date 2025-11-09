@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tipos de algoritmos en relación con el aprendizaje automático — Parte 2</title>
+  <title>Árboles de decisión — Parte 2</title>
   <!-- MISMO CSS QUE LA PARTE 1 -->
   <style>
     :root {
@@ -52,163 +52,176 @@
   <div class="page">
     <header id="top">
       <div class="breadcrumbs">Sistemas de Aprendizaje Automático → Tema 2 → <span class="pill">Parte 2</span></div>
-      <h1>Clasificación: Árboles de decisión y SVM lineal</h1>
+      <h1>Árboles de decisión</h1>
+      <p class="lead">Guía docente con definiciones, ejemplos y espacios para tus propias figuras.</p>
     </header>
 
     <nav class="toc" aria-label="Tabla de contenidos">
       <strong>Índice de la página</strong>
-      <a href="#objetivos">1. Objetivos de aprendizaje</a>
-      <a href="#arboles">2. Árboles de decisión</a>
-      <a href="#arboles-tipos">2.3. Tipos de árboles más utilizados</a>
-      <a href="#svm-lineal">3. Máquinas de Vectores de Soporte (SVM) — Lineal</a>
-      <a href="#autoevaluacion">4. Autoevaluación</a>
+      <a href="#que-son">1. ¿Qué son y para qué se utilizan?</a>
+      <a href="#ventajas">2. Ventajas y desventajas</a>
+      <a href="#representacion">3. Representación (nodos, hojas, ramas)</a>
+      <a href="#tipos-y-criterios">4. ID3, C4.5, CART y criterios de selección</a>
+      <a href="#entropia-validacion">5. Entropía + Entrenamiento y Validación</a>
+      <a href="#cross-validation">6. Validación cruzada (k-fold)</a>
+      <a href="#matriz-confusion">7. Matriz de confusión</a>
     </nav>
 
-    <section id="objetivos" class="card">
-      <h2>1. Objetivos de aprendizaje</h2>
+    <!-- 1 -->
+    <section id="que-son">
+      <h2>1. ¿Qué son y para qué se utilizan?</h2>
+      <p>Un <strong>árbol de decisión</strong> es un modelo supervisado que aprende <em>reglas en forma de preguntas</em> sobre las características para clasificar ejemplos o predecir valores.</p>
       <ul>
-        <li>Comprender la idea básica de los <strong>árboles de decisión</strong> para clasificación.</li>
-        <li>Reconocer el concepto de <strong>margen máximo</strong> en SVM lineal y el papel de los <em>vectores soporte</em>.</li>
-        <li>Distinguir <em>ventajas</em> y <em>limitaciones</em> de ambos enfoques a alto nivel.</li>
+        <li><strong>Clasificación:</strong> aprobar/denegar un crédito, detectar spam, diagnosticar una enfermedad.</li>
+        <li><strong>Regresión:</strong> estimar precio de vivienda, consumo energético o demanda diaria.</li>
       </ul>
+      <figure class="media">
+        <img src="../img/arbol-que-son.png" alt="Esquema conceptual de árbol de decisión" width="1200" height="600" loading="lazy" decoding="async">
+        <figcaption>Figura — Hueco para tu esquema general del modelo.</figcaption>
+      </figure>
     </section>
 
-    <section id="arboles">
-      <h2>2. Árboles de decisión</h2>
-      <p>
-        Modelo supervisado que divide el espacio de características mediante reglas simples (preguntas sobre atributos) para 
-        asignar una clase en las hojas. Cada división intenta separar mejor las clases.
-      </p>
-      <h3>2.1. Idea y componentes</h3>
+    <!-- 2 -->
+    <section id="ventajas" class="card">
+      <h2>2. Ventajas y desventajas</h2>
       <ul>
-        <li><strong>Nodos internos</strong>: reglas de decisión que particionan los datos.</li>
-        <li><strong>Hojas</strong>: etiqueta de clase asignada tras las reglas aplicadas.</li>
-        <li><strong>Crecimiento / complejidad</strong>: árboles más profundos capturan más detalle pero pueden sobreajustar.</li>
+        <li><strong>Ventajas:</strong> interpretables, no requieren demasiada preparación de datos, manejan variables numéricas y categóricas, capturan interacciones y no linealidades.</li>
+        <li><strong>Desventajas:</strong> sensibles a pequeñas variaciones en datos, riesgo de <em>sobreajuste</em> si son muy profundos, cortes ortogonales (ejes) que a veces no capturan fronteras complejas.</li>
       </ul>
-      <h3>2.2. Ventajas y limitaciones</h3>
-      <ul>
-        <li><em>Interpretables</em> y fáciles de explicar (reglas comprensibles).</li>
-        <li><em>Limitación</em>: si crecen demasiado, tienden al <em>sobreajuste</em>; se controla con profundidad/poda.</li>
-      </ul>
+      <figure class="media">
+        <img src="../img/ventajas-desventajas-arbol.png" alt="Ventajas y desventajas del árbol" width="1200" height="600" loading="lazy" decoding="async">
+        <figcaption>Figura — Coloca aquí una comparativa visual.</figcaption>
+      </figure>
+    </section>
 
-      <!-- 2.3 NUEVA SUBSECCIÓN -->
-      <h3 id="arboles-tipos">2.3. Tipos de árboles más utilizados</h3>
+    <!-- 3 -->
+    <section id="representacion">
+      <h2>3. Representación (nodos, hojas, ramas)</h2>
+      <ul>
+        <li><strong>Nodo interno:</strong> pregunta/regla (p. ej., <code>edad &lt; 30</code>).</li>
+        <li><strong>Ramas:</strong> resultados de la regla (sí/no o múltiples valores).</li>
+        <li><strong>Hoja:</strong> decisión final (clase) o valor numérico (regresión).</li>
+      </ul>
+      <div class="note">Consejo: limita <em>profundidad</em>, tamaño mínimo de hojas o usa <em>poda</em> para controlar complejidad.</div>
+      <figure class="media">
+        <img src="../img/representacion-arbol.png" alt="Ejemplo con nodos, ramas y hojas" width="1100" height="600" loading="lazy" decoding="async">
+        <figcaption>Figura — Diagrama sencillo de un árbol con etiquetas.</figcaption>
+      </figure>
+    </section>
+
+    <!-- 4 -->
+    <section id="tipos-y-criterios">
+      <h2>4. ID3, C4.5, CART y criterios de selección</h2>
+
+      <h3>4.1. Definiciones rápidas</h3>
       <dl>
-        <dt><strong>CART (Classification and Regression Trees)</strong></dt>
-        <dd>
-          Árbol binario que divide con criterios como <em>Gini</em> (clasificación) o <em>MSE</em> (regresión) y luego <em>poda</em> para controlar la complejidad.
-          <ul>
-            <li><em>Ejemplo 1:</em> decidir <strong>aprobado/denegado</strong> en solicitudes de crédito.</li>
-            <li><em>Ejemplo 2:</em> estimar el <strong>precio</strong> de una vivienda (regresión).</li>
-          </ul>
-        </dd>
+        <dt><strong>ID3</strong></dt>
+        <dd>Elige el atributo con <em>mayor ganancia de información</em> (basada en entropía). Históricamente para variables categóricas.</dd>
 
-        <dt><strong>ID3 (Iterative Dichotomiser 3)</strong></dt>
-        <dd>
-          Elige en cada nodo el atributo con mayor <em>ganancia de información</em> (entropía). Pensado para variables <em>categóricas</em> y sin poda incorporada.
-          <ul>
-            <li><em>Ejemplo 1:</em> clasificar <strong>emails</strong> por categorías con variables binarias.</li>
-            <li><em>Ejemplo 2:</em> el clásico de <strong>jugar al tenis</strong> según el clima.</li>
-          </ul>
-        </dd>
+        <dt><strong>C4.5</strong></dt>
+        <dd>Extiende ID3: maneja continuas con umbrales, valores perdidos y usa <em>proporción de ganancia</em> para evitar sesgos hacia atributos con muchos valores. Incluye <em>poda</em>.</dd>
 
-        <dt><strong>C4.5 y C5.0</strong></dt>
-        <dd>
-          Sucesores de ID3. <em>C4.5</em> usa <em>ratio de ganancia</em>, maneja <em>continuas</em> con umbrales, <em>valores perdidos</em> y <em>poda</em>. <em>C5.0</em> (posterior) optimiza memoria/tiempo e introduce opciones como <em>boosting</em>.
-          <ul>
-            <li><em>Ejemplo 1:</em> predicción de <strong>churn</strong> en telecomunicaciones (variables mixtas).</li>
-            <li><em>Ejemplo 2:</em> <strong>diagnóstico</strong> con atributos continuos y datos faltantes.</li>
-          </ul>
-        </dd>
-
-        <dt><strong>CHAID (Chi-squared Automatic Interaction Detection)</strong></dt>
-        <dd>
-          Árbol con <em>ramas múltiples</em> que selecciona divisiones mediante <em>tests chi-cuadrado</em> (con correcciones) y detiene por <em>significación</em>. Muy usado en <em>segmentación</em>.
-          <ul>
-            <li><em>Ejemplo 1:</em> segmentar <strong>clientes</strong> por probabilidad de respuesta.</li>
-            <li><em>Ejemplo 2:</em> agrupar <strong>perfiles</strong> en encuestas de opinión.</li>
-          </ul>
-        </dd>
-
-        <dt><strong>Decision Stump</strong></dt>
-        <dd>
-          Árbol de <em>un solo nivel</em> (una regla/umbral). Suele usarse como <em>aprendiz débil</em> en <em>boosting</em> o como baseline muy interpretable.
-          <ul>
-            <li><em>Ejemplo 1:</em> <strong>AdaBoost</strong> para detección rápida de rostros.</li>
-            <li><em>Ejemplo 2:</em> regla simple para <strong>marcar</strong> transacciones según un umbral.</li>
-          </ul>
-        </dd>
-
-        <dt><strong>M5 (árboles de modelos)</strong></dt>
-        <dd>
-          En lugar de una etiqueta/constante en la hoja, ajusta un <em>modelo lineal</em> local. Combina particiones con regresiones por hoja; muy útil para <em>salidas continuas</em>.
-          <ul>
-            <li><em>Ejemplo 1:</em> estimar <strong>consumo energético</strong> a partir de variables continuas.</li>
-            <li><em>Ejemplo 2:</em> predecir <strong>MPG</strong> de vehículos con muchos atributos.</li>
-          </ul>
-        </dd>
-
-        <dt><strong>Conditional Decision Trees (Árboles de inferencia condicional)</strong></dt>
-        <dd>
-          Particionado <em>no sesgado</em> que usa <em>tests estadísticos</em> para elegir divisiones y un <em>criterio de parada</em> (en vez de poda). Reduce el sesgo hacia variables con muchos cortes.
-          <ul>
-            <li><em>Ejemplo 1:</em> modelos <strong>clínicos</strong> donde interesa una selección de variables sin sesgo.</li>
-            <li><em>Ejemplo 2:</em> <strong>ecología</strong>: presencia/ausencia de especie con covariables mixtas.</li>
-          </ul>
-        </dd>
+        <dt><strong>CART</strong></dt>
+        <dd>Árbol binario. Usa <em>impureza de Gini</em> para clasificación y <em>MSE</em> para regresión; aplica <em>poda por complejidad</em>.</dd>
       </dl>
 
-      <!-- Sustituye la ruta por tu PNG en GitHub -->
-      <figure class="media">
-        <picture>
-          <img src="../img/parte2-arbol-decision.JPG" alt="Problema de árbol de decisión" width="1200" height="700" loading="lazy" decoding="async">
-        </picture>
-        <figcaption>Figura 1 — Problema Árbol de decisión.</figcaption>
-      </figure>
-      <figure class="media">
-        <picture>
-          <img src="../img/parte2-arbol-decision - Ejemplo .JPG" alt="Ilustración árbol de decisión" width="900" height="700" loading="lazy" decoding="async">
-        </picture>
-        <figcaption>Figura 2 — Árbol de decisión.</figcaption>
-      </figure>
-    </section>
+      <h3>4.2. Métodos de selección de atributos (con ejemplo numérico)</h3>
+      <p>Supongamos un conjunto de 20 ejemplos con objetivo binario: 12 <code>sí</code> y 8 <code>no</code>.</p>
 
-    <section id="svm-lineal">
-      <h2>3. Máquinas de Vectores de Soporte (SVM) — Lineal</h2>
-      <p>
-        Clasificador que busca un <strong>hiperplano</strong> que separe las clases con el <strong>máximo margen</strong>. 
-        Los <em>vectores soporte</em> son las observaciones que definen ese margen.
-      </p>
-      <h3>3.1. Idea</h3>
-      <ul>
-        <li>Separación lineal mediante un hiperplano en el espacio de características.</li>
-        <li>Maximizar la distancia a los puntos más cercanos de cada clase (margen máximo).</li>
-      </ul>
-      <h3>3.2. Ventajas y limitaciones</h3>
-      <ul>
-        <li><em>Eficaz</em> en espacios de alta dimensión y robusto a sobreajuste con un margen bien definido.</li>
-        <li><em>Limitación</em>: la versión <em>lineal</em> solo separa correctamente si las clases son linealmente separables.</li>
-      </ul>
+      <h4>a) Ganancia de información (ID3)</h4>
+      <pre><code>Entropía del conjunto S:
+p_sí = 12/20 = 0.6
+p_no = 8/20 = 0.4
+H(S) = −(0.6·log₂0.6 + 0.4·log₂0.4) ≈ 0.971 bits
 
-      <!-- Sustituye la ruta por tu PNG en GitHub -->
+Atributo Color:
+- Rojo: 8 elementos (6 sí, 2 no) → H(Rojo) ≈ 0.811
+- Azul: 12 elementos (6 sí, 6 no) → H(Azul) = 1.0
+H(S|Color) = (8/20)·0.811 + (12/20)·1.0 ≈ 0.925
+
+Ganancia de información:
+IG(Color) = H(S) − H(S|Color) ≈ 0.971 − 0.925 = 0.046 bits
+      </code></pre>
+
+      <h4>b) Proporción de ganancia (C4.5)</h4>
+      <pre><code>SplitInfo(Color) = −[(8/20)·log₂(8/20) + (12/20)·log₂(12/20)] ≈ 0.971
+Gain Ratio = IG / SplitInfo ≈ 0.046 / 0.971 ≈ 0.048
+      </code></pre>
+
+      <h4>c) Índice Gini (CART)</h4>
+      <pre><code>Gini(S) = 1 − (0.6² + 0.4²) = 0.48
+Gini(Rojo) = 1 − (0.75² + 0.25²) = 0.375
+Gini(Azul) = 1 − (0.5² + 0.5²) = 0.5
+Gini tras el split = (8/20)·0.375 + (12/20)·0.5 = 0.45
+Mejora Gini = 0.48 − 0.45 = 0.03
+      </code></pre>
+
       <figure class="media">
-        <picture>
-          <img src="../img/svm-lineal.png" alt="Ejemplo de SVM lineal con margen y vectores soporte" width="1200" height="700" loading="lazy" decoding="async">
-        </picture>
-        <figcaption>Figura 3 — SVM lineal.</figcaption>
+        <img src="../img/criterios-seleccion.png" alt="Ilustración de entropía, ganancia y Gini" width="1200" height="640" loading="lazy" decoding="async">
+        <figcaption>Figura — Deja aquí una lámina con fórmulas y comparativa visual.</figcaption>
       </figure>
     </section>
 
-    <section id="autoevaluacion" class="card">
-      <h2>4. Autoevaluación</h2>
-      <details>
-        <summary>(1) ¿Qué riesgo aparece al aumentar en exceso la profundidad de un árbol?</summary>
-        <p>El <em>sobreajuste</em>: memoriza ruido y pierde capacidad de generalización.</p>
-      </details>
-      <details>
-        <summary>(2) ¿Qué puntos determinan el margen en SVM lineal?</summary>
-        <p>Los <em>vectores soporte</em>, que son los más cercanos al hiperplano separador.</p>
-      </details>
+    <!-- 5 -->
+    <section id="entropia-validacion">
+      <h2>5. Entropía + Entrenamiento y Validación</h2>
+
+      <h3>5.1. Entropía (definición y ejemplo)</h3>
+      <p>La <strong>entropía</strong> mide la impureza/mezcla de clases:</p>
+      <pre><code>H(S) = − Σ pᵢ · log₂ pᵢ
+Ejemplo: 9 “sí” y 5 “no” → p_sí = 9/14, p_no = 5/14
+H(S) ≈ −(0.6429·log₂0.6429 + 0.3571·log₂0.3571) ≈ 0.94 bits
+      </code></pre>
+
+      <h3>5.2. Entrenamiento y validación (flujo básico)</h3>
+      <ol>
+        <li>Divide en <strong>train/test</strong> (por ejemplo, 80/20).</li>
+        <li><strong>Entrena</strong> el árbol en train (ajusta profundidad, min_samples_leaf, etc.).</li>
+        <li><strong>Valida</strong> con test: exactitud, F1, MAE (si es regresión), etc.</li>
+      </ol>
+      <div class="note">Ejemplo práctico: construye un árbol para predecir si un cliente compra (sí/no) y evalúalo con exactitud y F1 sobre el conjunto de test.</div>
+
+      <figure class="media">
+        <img src="../img/entrenamiento-validacion.png" alt="Diagrama entrenamiento vs validación" width="1200" height="620" loading="lazy" decoding="async">
+        <figcaption>Figura — Espacio para tu diagrama de flujo de entrenamiento/validación.</figcaption>
+      </figure>
+    </section>
+
+    <!-- 6 -->
+    <section id="cross-validation" class="card">
+      <h2>6. Validación cruzada (k-fold)</h2>
+      <p>La <strong>validación cruzada k-fold</strong> reparte los datos en <em>k</em> pliegues; se entrena con k−1 y se valida con el restante, repitiendo k veces y promediando métricas.</p>
+      <ul>
+        <li><strong>Cuándo usarla:</strong> para estimar rendimiento más estable y elegir hiperparámetros (profundidad, min_samples_split, etc.).</li>
+        <li><strong>Valores típicos:</strong> k = 5 o 10.</li>
+      </ul>
+      <figure class="media">
+        <img src="../img/kfold.png" alt="Esquema de validación cruzada k-fold" width="1100" height="520" loading="lazy" decoding="async">
+        <figcaption>Figura — Añade aquí tu gráfico de k pliegues.</figcaption>
+      </figure>
+    </section>
+
+    <!-- 7 -->
+    <section id="matriz-confusion">
+      <h2>7. Matriz de confusión (definición)</h2>
+      <p>Tabla 2×2 para problemas binarios (extensible a multicategoría) que relaciona las <em>predicciones</em> del modelo con las <em>etiquetas reales</em>:</p>
+      <pre><code>                 Clase real
+               Pos      Neg
+Pred Pos   →   TP       FP
+Pred Neg   →   FN       TN
+      </code></pre>
+      <ul>
+        <li><strong>TP</strong> (verdadero positivo): positivo bien clasificado.</li>
+        <li><strong>FP</strong> (falso positivo): negativo clasificado como positivo.</li>
+        <li><strong>FN</strong> (falso negativo): positivo clasificado como negativo.</li>
+        <li><strong>TN</strong> (verdadero negativo): negativo bien clasificado.</li>
+      </ul>
+      <div class="note">A partir de la matriz se calculan métricas como <em>exactitud</em>, <em>precisión</em>, <em>recobrado (recall)</em> y <em>F1</em>.</div>
+
+      <figure class="media">
+        <img src="../img/matriz-confusion.png" alt="Matriz de confusión con TP, FP, FN, TN" width="1100" height="560" loading="lazy" decoding="async">
+        <figcaption>Figura — Deja aquí tu imagen de matriz de confusión.</figcaption>
+      </figure>
     </section>
 
     <footer>
