@@ -60,25 +60,27 @@
       <strong>Índice de la página</strong>
       <a href="#definicion">1. ¿Qué son y para qué se utilizan?</a>
       <a href="#representacion">2. Representación (nodos, hojas, ramas)</a>
-      <a href="#ventajas">2. Ventajas y desventajas</a>
-      <a href="#tipos-y-criterios">4. ID3, C4.5, CART y criterios de selección</a>
+      <a href="#ventajas">3. Ventajas y desventajas</a>
+      <a href="#tipos">4. Tipos de árboles: ID3, C4.5 y CART</a>
       <a href="#matriz-confusion">5. Matriz de confusión</a>
-      <a href="#cross-validation">6. Validación cruzada (k-fold)</a>
-
+      <a href="#svm">6. Máquinas de Vectores de Soporte (SVM)</a>
     </nav>
 
     <!-- 1 -->
     <section id="definicion">
-      <h2>1. Definición ¿Qué son y para qué se utilizan?</h2>
+      <h2>1. ¿Qué son y para qué se utilizan?</h2>
       <p>Un <strong>árbol de decisión</strong> es un modelo supervisado que aprende <em>reglas en forma de preguntas</em> sobre las características para clasificar ejemplos o predecir valores.</p>
       <ul>
         <li><strong>Clasificación:</strong> aprobar/denegar un crédito, detectar spam, diagnosticar una enfermedad.</li>
         <li><strong>Regresión:</strong> estimar precio de vivienda, consumo energético o demanda diaria.</li>
       </ul>
       <figure class="media">
-        <img src="../img/parte2-arbol-decision.JPG" alt="Tabla de ejemplo - Problema Jugar al Tenis" width="1200" height="600" loading="lazy" decoding="async">
-        <figcaption>Problema Árbol de Decisión.</figcaption>
+        <img src="../img/arbol-que-son.png" alt="Esquema conceptual de árbol de decisión" width="1200" height="600" loading="lazy" decoding="async">
+        <figcaption>Figura — Hueco para tu esquema general del modelo.</figcaption>
+      </figure>
     </section>
+
+    <!-- 2 -->
     <section id="representacion">
       <h2>2. Representación (nodos, hojas, ramas)</h2>
       <ul>
@@ -88,139 +90,135 @@
       </ul>
       <div class="note">Consejo: limita <em>profundidad</em>, tamaño mínimo de hojas o usa <em>poda</em> para controlar complejidad.</div>
       <figure class="media">
-        <img src="../img/parte2-arbol-decision - Ejemplo .JPG" alt="Esquema conceptual de árbol de decisión" width="1200" height="600" loading="lazy" decoding="async">
-        <figcaption>Figura — Diagrama sencillo de un árbol con etiquetas</figcaption>
+        <img src="../img/representacion-arbol.png" alt="Ejemplo con nodos, ramas y hojas" width="1100" height="600" loading="lazy" decoding="async">
+        <figcaption>Figura — Diagrama sencillo de un árbol con etiquetas.</figcaption>
       </figure>
-      <p class="note">
-        Recurso:
-        <a href="https://fhernanb.github.io/libro_mod_pred/arb-de-regre.html#%C3%A1rbol-de-regresi%C3%B3n"
-         target="_blank" rel="noopener noreferrer">
-          Arbol de Regresión
-        </a>
-      </p>
     </section>
 
-    <!-- 2 -->
+    <!-- 3 -->
     <section id="ventajas" class="card">
       <h2>3. Ventajas y desventajas</h2>
       <ul>
-        <li><strong>Ventajas:</strong> interpretables, no requieren demasiada preparación de datos, manejan variables numéricas y categóricas, capturan interacciones y no linealidades.</li>
-        <li><strong>Desventajas:</strong> sensibles a pequeñas variaciones en datos, riesgo de <em>sobreajuste</em> si son muy profundos, cortes ortogonales (ejes) que a veces no capturan fronteras complejas.</li>
+        <li><strong>Ventajas:</strong> interpretables, manejan variables numéricas y categóricas, capturan interacciones y no linealidades.</li>
+        <li><strong>Desventajas:</strong> sensibles a variaciones en datos, riesgo de <em>sobreajuste</em> si son muy profundos, cortes ortogonales que a veces no capturan fronteras complejas.</li>
       </ul>
       <figure class="media">
-        <img src="../img/Modul-7_3.-Perbedaan-Over-dan-Under.png" alt="Sobreajuste" width="1200" height="600" loading="lazy" decoding="async">
-        <figcaption>Figura — Sobreajuste.</figcaption>
+        <img src="../img/underfit-goodfit-overfit-1.png" alt="Bajo ajuste, buen ajuste y sobreajuste" width="1200" height="600" loading="lazy" decoding="async">
+        <figcaption>Figura — Bajo ajuste vs buen ajuste vs sobreajuste.</figcaption>
       </figure>
-      <figure class="media">
-        <img src="../img/underfit-goodfit-overfit-1.png" alt="Sobreajuste" width="1200" height="600" loading="lazy" decoding="async">
-        <figcaption>Figura — Sobreajuste.</figcaption>
-      </figure>
-      <figure class="media">
-        <img src="../img/estrategias-evitar overfitting.JPG" alt="Soluciones al sobreajuste" width="1200" height="600" loading="lazy" decoding="async">
-        <figcaption>Figura — Estrategias mitigar el sobreajuste.</figcaption>
-      </figure>
-      <!-- justo después del </ul> de Ventajas y desventajas -->
       <p class="note">
         Recurso interactivo:
-        <a href="https://mlu-explain.github.io/decision-tree/"
-         target="_blank" rel="noopener noreferrer">
+        <a href="https://mlu-explain.github.io/decision-tree/" target="_blank" rel="noopener noreferrer">
           Decision Trees — MLU-Explain
         </a>
+        (explicación visual y paso a paso).
       </p>
-
     </section>
 
     <!-- 4 -->
-    <section id="tipos-y-criterios">
-      <h2>4. ID3, C4.5, CART y criterios de selección</h2>
+    <section id="tipos">
+      <h2>4. Tipos de árboles: ID3, C4.5 y CART</h2>
 
-      <h3>4.1. Definiciones rápidas</h3>
+      <h3>4.1. Definiciones simples con ejemplos cotidianos</h3>
       <dl>
         <dt><strong>ID3</strong></dt>
-        <dd>Elige el atributo con <em>mayor ganancia de información</em> (basada en entropía). Históricamente para variables categóricas.</dd>
-        <d2><strong>Entropía: </strong>mide el grado de desinformación de un sistema</d2>
-        <figure class="media">
-        <img src="../img/entropía.JPG" alt="Entropía" width="1200" height="640" loading="lazy" decoding="async">
-        <figcaption>Figura — Entropía.</figcaption>
-      </figure>
+        <dd>
+          Elige en cada paso la <em>pregunta</em> que mejor separa las clases según la información que aporta. 
+          <ul>
+            <li><em>Ejemplo 1:</em> clasificar <strong>emails</strong> (¿contiene “oferta”, ¿tiene adjunto?, ¿dominio conocido?) para decir <strong>spam/no spam</strong>.</li>
+            <li><em>Ejemplo 2:</em> decidir si <strong>recomendar una película</strong> según edad, género y si le gustaron títulos similares.</li>
+          </ul>
+        </dd>
 
         <dt><strong>C4.5</strong></dt>
-        <dd>El C4.5 se basa en el ID3, por lo tanto, la estructura principal de ambos métodos es la misma.  El C4.5 construye un árbol de decisión mediante el algoritmo "divide y vencerás" y evalúa la información en cada caso basada en la ganancia de información y proporciona mejores resultados si los atributos tienen muchos posibles valores. Realiza una poda tras la generación del árbol (pospoda) con el fin de mejorar la generalización del modelo: elimina nodos que al podar mejoran la precisión en la clasificación.
+        <dd>
+          Evolución de ID3 que maneja <em>números</em> con umbrales, <em>valores perdidos</em> y evita sesgos hacia atributos con muchos valores; además <em>poda</em> ramas poco útiles.
+          <ul>
+            <li><em>Ejemplo 1:</em> predecir <strong>baja de clientes</strong> usando variables mezcladas (edad, minutos de uso, provincia).</li>
+            <li><em>Ejemplo 2:</em> <strong>clasificar frutas</strong> por peso y color incluso si faltan algunos datos.</li>
+          </ul>
+        </dd>
 
-        <dt><strong>CART(Classification and Regression Tree)</strong></dt>
-        <dd>Árbol binario. Usa <em>impureza de Gini</em> para clasificación y <em>MSE</em> para regresión.
-        <d2><strong>Impureza de Gini: </strong>mide la frecuencia con la que se clasifica erróneamente un atributo elegido al azar</d2>
+        <dt><strong>CART</strong></dt>
+        <dd>
+          Árbol <em>binario</em> muy usado en librerías modernas. Sirve para <strong>clasificación y regresión</strong> (divide con reglas sí/no y luego poda).
+          <ul>
+            <li><em>Ejemplo 1:</em> aprobar/denegar un <strong>crédito</strong> con reglas sencillas (ingresos, antigüedad, deudas).</li>
+            <li><em>Ejemplo 2:</em> estimar el <strong>precio</strong> de una vivienda con divisiones por superficie y zona.</li>
+          </ul>
+        </dd>
       </dl>
-      <h3>¿Qué mide cada cosa?</h3>
-  <ul>
-    <li><strong>Entropía</strong>: cuánta incertidumbre hay (bolsa muy mezclada).</li>
-    <li><strong>Gini</strong>: probabilidad de equivocarte al adivinar la clase al azar.</li>
-    <li><strong>Ganancia de información</strong>: mezcla antes – mezcla después del corte.</li>
-  </ul>
 
-  <h3>¿Qué usa cada algoritmo?</h3>
-  <ul>
-    <li><strong>ID3</strong>: Entropía + Ganancia (mejor para categóricas; sin poda).</li>
-    <li><strong>C4.5</strong>: Entropía + <em>Gain Ratio</em> (corrige “muchos valores”, soporta continuas y poda).</li>
-    <li><strong>CART</strong>: <u>Clasificación</u> → Gini; <u>Regresión</u> → MSE. Árbol binario.</li>
-  </ul>
-
-  <h3>Reglas rápidas</h3>
-  <ul>
-    <li>En <code>sklearn</code>, usa CART con <strong>Gini</strong> (rápido). Si quieres teoría de info, elige <strong>entropía</strong>.</li>
-    <li>Si un atributo tiene muchísimos valores, <strong>Gain Ratio (C4.5)</strong> evita sesgos.</li>
-    <li>Para regresión, olvida Gini/entropía: usa <strong>MSE</strong>.</li>
-  </ul>
+      <figure class="media">
+        <img src="../img/tipos-arboles-ejemplos.png" alt="Lámina de ID3, C4.5 y CART con ejemplos" width="1200" height="640" loading="lazy" decoding="async">
+        <figcaption>Figura — Espacio para una comparativa visual rápida.</figcaption>
+      </figure>
     </section>
 
-        <!-- 5 -->
+    <!-- 5 -->
     <section id="matriz-confusion">
       <h2>5. Matriz de confusión (definición)</h2>
       <p>Tabla 2×2 para problemas binarios (extensible a multicategoría) que relaciona las <em>predicciones</em> del modelo con las <em>etiquetas reales</em>:</p>
-      <figure class="media">
-        <img src="../img/matriz-confusion.JPG" alt="Matriz de confusion" width="1100" height="520" loading="lazy" decoding="async">
-        <figcaption>Figura — Matriz de confusion.</figcaption>
-        </figure>
-        <p class="note">
-        Recurso interactivo:
-        <a href="https://telefonicatech.com/blog/como-interpretar-la-matriz-de-confusion-ejemplo-practico"
-         target="_blank" rel="noopener noreferrer">
-        Cómo interpretar la matriz de confusión
-        </a>
-      </p>
-        
+      <pre><code>                 Clase real
+               Pos      Neg
+Pred Pos   →   TP       FP
+Pred Neg   →   FN       TN
+      </code></pre>
       <ul>
-        <li><strong>TP</strong> (verdadero positivo): positivo bien clasificado.</li>
-        <li><strong>FP</strong> (falso positivo): negativo clasificado como positivo.</li>
-        <li><strong>FN</strong> (falso negativo): positivo clasificado como negativo.</li>
-        <li><strong>TN</strong> (verdadero negativo): negativo bien clasificado.</li>
+        <li><strong>TP</strong> verdadero positivo; <strong>FP</strong> falso positivo; <strong>FN</strong> falso negativo; <strong>TN</strong> verdadero negativo.</li>
       </ul>
-      <div class="note">A partir de la matriz se calculan métricas como <em>exactitud</em>, <em>precisión</em>, <em>recobrado (recall)</em> y <em>F1</em>.</div>
+      <div class="note">De aquí salen métricas como <em>exactitud</em>, <em>precisión</em>, <em>recobrado</em> y <em>F1</em>.</div>
 
       <figure class="media">
-        <img src="../img/matriz-confusion-formulas.JPG" alt="Matriz de confusión con TP, FP, FN, TN" width="1100" height="560" loading="lazy" decoding="async">
-        <figcaption>Figura — Formulas Matriz Confusión.</figcaption>
-      </figure>
-      <figure class="media">
-        <img src="../img/matriz-confusion-formulas2.JPG" alt="Interpretación Fórmulas" width="1100" height="560" loading="lazy" decoding="async">
-        <figcaption>Figura — Interpretación Fórmulas.</figcaption>
+        <img src="../img/matriz-confusion.png" alt="Matriz de confusión con TP, FP, FN, TN" width="1100" height="560" loading="lazy" decoding="async">
+        <figcaption>Figura — Deja aquí tu imagen de matriz de confusión.</figcaption>
       </figure>
     </section>
-    
+
     <!-- 6 -->
-    <section id="cross-validation" class="card">
-      <h2>6. Validación cruzada (k-fold)</h2>
-      <p>La <strong>validación cruzada k-fold</strong> reparte los datos en <em>k</em> pliegues; se entrena con k−1 y se valida con el restante, repitiendo k veces y promediando métricas.</p>
-      <ul>
-        <li><strong>Cuándo usarla:</strong> para estimar rendimiento más estable y elegir hiperparámetros (profundidad, min_samples_split, etc.).</li>
-        <li><strong>Valores típicos:</strong> k = 5 o 10.</li>
-      </ul>
-      <figure class="media">
-        <img src="../img/kfold.png" alt="Esquema de validación cruzada k-fold" width="1100" height="520" loading="lazy" decoding="async">
-        <figcaption>Figura — Añade aquí tu gráfico de k pliegues.</figcaption>
-      </figure>
-    </section>
+    <section id="svm" class="card">
+      <h2>6. Máquinas de Vectores de Soporte (SVM)</h2>
+      <h3>6.1. ¿Qué es y por qué es supervisado?</h3>
+      <p>
+        Un <strong>SVM</strong> busca el <em>hiperplano</em> que separa clases con el <strong>máximo margen</strong>. Es un algoritmo <em>supervisado</em> porque 
+        aprende a partir de ejemplos etiquetados <code>(X, y)</code> para que la frontera resultante clasifique correctamente esos ejemplos y generalice a nuevos casos.
+      </p>
 
+      <h3>6.2. Partes clave</h3>
+      <ul>
+        <li><strong>Hiperplano</strong>: la frontera de decisión.</li>
+        <li><strong>Margen</strong>: distancia entre el hiperplano y los puntos más cercanos.</li>
+        <li><strong>Vectores soporte</strong>: puntos que “tocan” el margen y definen la frontera.</li>
+        <li><strong>Parámetro C</strong>: controla errores vs. margen (regularización).</li>
+        <li><strong>Kernels</strong> (opcional): permiten separar datos no lineales (lineal, polinómico, RBF, etc.).</li>
+      </ul>
+
+      <h3>6.3. Ejemplos prácticos</h3>
+      <ul>
+        <li><strong>Reconocimiento de dígitos</strong> (0–9) con SVM en <em>scikit-learn</em> (dataset de dígitos). 
+          <a href="https://scikit-learn.org/stable/auto_examples/classification/plot_digits_classification.html" target="_blank" rel="noopener noreferrer">Ejemplo oficial</a>.
+        </li>
+        <li><strong>Detección de peatones</strong> con <em>HOG + SVM</em> en OpenCV (clasificador lineal pre-entrenado).
+          <a href="https://docs.opencv.org/3.4/d5/d33/structcv_1_1HOGDescriptor.html" target="_blank" rel="noopener noreferrer">Documentación HOGDescriptor</a>.
+        </li>
+      </ul>
+
+      <h3>6.4. ¿Cuándo preferir SVM vs. Regresión logística o Árboles?</h3>
+      <ul>
+        <li><strong>SVM vs. Regresión logística</strong>: ambos son lineales en el espacio de entrada, pero la RL optimiza <em>probabilidades</em> (salida calibrada) mientras que SVM optimiza el <em>margen</em> (buena separación incluso en alta dimensión). Si necesitas probabilidades bien calibradas, la RL suele ser preferible; si buscas una frontera robusta y tienes datos de alta dimensión, SVM brilla.</li>
+        <li><strong>SVM vs. Árboles</strong>: los árboles son más <em>interpretables</em> y manejan variables mixtas sin estandarizar; SVM (con kernels) puede capturar fronteras complejas con buen rendimiento, pero es menos interpretable y sensible a la escala de las variables.</li>
+      </ul>
+
+      <figure class="media">
+        <img src="../img/svm-esquema.png" alt="Hiperplano, margen y vectores soporte" width="1200" height="640" loading="lazy" decoding="async">
+        <figcaption>Figura — Espacio para una lámina de SVM (hiperplano, margen y vectores soporte).</figcaption>
+      </figure>
+
+      <p class="note">
+        Más recursos: 
+        <a href="https://scikit-learn.org/stable/modules/svm.html" target="_blank" rel="noopener noreferrer">Guía SVM en scikit-learn</a>.
+      </p>
+    </section>
 
     <footer>
       <p>© 2025 — Material docente DigiTech. Jose Miguel Martínez.</p>
