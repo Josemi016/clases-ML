@@ -192,9 +192,12 @@ Pred Neg   →   FN       TN
         <li><strong>Hiperplano</strong>: la frontera de decisión.</li>
         <li><strong>Margen</strong>: distancia entre el hiperplano y los puntos más cercanos.</li>
         <li><strong>Vectores soporte</strong>: puntos que “tocan” el margen y definen la frontera.</li>
-        <li><strong>Parámetro C</strong>: controla errores vs. margen (regularización).</li>
-        <li><strong>Kernels</strong> (opcional): permiten separar datos no lineales (lineal, polinómico, RBF, etc.).</li>
       </ul>
+
+      <figure class="media">
+        <img src="../img/svm.JPG" alt="Hiperplano, margen y vectores soporte" width="1200" height="640" loading="lazy" decoding="async">
+        <figcaption>Figura — SVM (hiperplano, margen y vectores soporte).</figcaption>
+      </figure>
 
       <h3>6.3. Ejemplos prácticos</h3>
       <ul>
@@ -211,11 +214,6 @@ Pred Neg   →   FN       TN
         <li><strong>SVM vs. Regresión logística</strong>: ambos son lineales en el espacio de entrada, pero la RL optimiza <em>probabilidades</em> (salida calibrada) mientras que SVM optimiza el <em>margen</em> (buena separación incluso en alta dimensión). Si necesitas probabilidades bien calibradas, la RL suele ser preferible; si buscas una frontera robusta y tienes datos de alta dimensión, SVM brilla.</li>
         <li><strong>SVM vs. Árboles</strong>: los árboles son más <em>interpretables</em> y manejan variables mixtas sin estandarizar; SVM (con kernels) puede capturar fronteras complejas con buen rendimiento, pero es menos interpretable y sensible a la escala de las variables.</li>
       </ul>
-
-      <figure class="media">
-        <img src="../img/svm-esquema.png" alt="Hiperplano, margen y vectores soporte" width="1200" height="640" loading="lazy" decoding="async">
-        <figcaption>Figura — Espacio para una lámina de SVM (hiperplano, margen y vectores soporte).</figcaption>
-      </figure>
 
       <p class="note">
         Más recursos: 
