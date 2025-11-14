@@ -192,6 +192,8 @@ Pred Neg   →   FN       TN
         <li><strong>Hiperplano</strong>: la frontera de decisión.</li>
         <li><strong>Margen</strong>: distancia entre el hiperplano y los puntos más cercanos.</li>
         <li><strong>Vectores soporte</strong>: puntos que “tocan” el margen y definen la frontera.</li>
+        <li><strong>Parámetro C</strong>: controla errores vs margen.</li>
+        <li><strong>Kernels</strong>: permiten separar datos de manera no lineal (ej: polinómico).</li>
       </ul>
 
       <figure class="media">
@@ -199,19 +201,16 @@ Pred Neg   →   FN       TN
         <figcaption>Figura — SVM (hiperplano, margen y vectores soporte).</figcaption>
       </figure>
 
-      <h3>6.3. Ejemplos prácticos</h3>
+      <h3>6.3. Ejemplo práctico</h3>
       <ul>
         <li><strong>Reconocimiento de dígitos</strong> (0–9) con SVM en <em>scikit-learn</em> (dataset de dígitos). 
           <a href="https://scikit-learn.org/stable/auto_examples/classification/plot_digits_classification.html" target="_blank" rel="noopener noreferrer">Ejemplo oficial</a>.
-        </li>
-        <li><strong>Detección de peatones</strong> con <em>HOG + SVM</em> en OpenCV (clasificador lineal pre-entrenado).
-          <a href="https://docs.opencv.org/3.4/d5/d33/structcv_1_1HOGDescriptor.html" target="_blank" rel="noopener noreferrer">Documentación HOGDescriptor</a>.
         </li>
       </ul>
 
       <h3>6.4. ¿Cuándo preferir SVM vs. Regresión logística o Árboles?</h3>
       <ul>
-        <li><strong>SVM vs. Regresión logística</strong>: ambos son lineales en el espacio de entrada, pero la RL optimiza <em>probabilidades</em> (salida calibrada) mientras que SVM optimiza el <em>margen</em> (buena separación incluso en alta dimensión). Si necesitas probabilidades bien calibradas, la RL suele ser preferible; si buscas una frontera robusta y tienes datos de alta dimensión, SVM brilla.</li>
+        <li><strong>SVM vs. Regresión logística</strong>: ambos son lineales en el espacio de entrada, pero la RL optimiza <em>probabilidades</em> (salida calibrada) mientras que SVM optimiza el <em>margen</em> (buena separación incluso en alta dimensión). Si buscamos probabilidades bien calibradas, la RL suele ser preferible; si buscamos una frontera robusta y tenemos datos de alta dimensión, SVM brilla.</li>
         <li><strong>SVM vs. Árboles</strong>: los árboles son más <em>interpretables</em> y manejan variables mixtas sin estandarizar; SVM (con kernels) puede capturar fronteras complejas con buen rendimiento, pero es menos interpretable y sensible a la escala de las variables.</li>
       </ul>
 
