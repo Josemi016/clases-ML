@@ -214,6 +214,44 @@ Pred Neg   →   FN       TN
         <li><strong>SVM vs. Árboles</strong>: los árboles son más <em>interpretables</em> y manejan variables mixtas sin estandarizar; SVM (con kernels) puede capturar fronteras complejas con buen rendimiento, pero es menos interpretable y sensible a la escala de las variables.</li>
       </ul>
 
+      <h3>6.5. Escenarios de sobreajuste en un SVM</h3>
+<ul>
+  <li><strong>C demasiado grande (poca regularización)</strong>
+    <ul>
+      <li>El modelo intenta clasificar casi todos los puntos de entrenamiento correctamente.</li>
+      <li>La frontera de decisión se dobla para “salvar” puntos raros o con ruido, en lugar de mantener un margen sencillo.</li>
+    </ul>
+  </li>
+
+  <li><strong>Kernel excesivamente flexible</strong> (RBF o polinómico de alto grado)
+    <ul>
+      <li>Permite fronteras muy curvas y complejas.</li>
+      <li>Si además usamos un <code>C</code> alto, el SVM puede acabar dibujando una frontera tipo “laberinto” alrededor de los puntos de entrenamiento.</li>
+    </ul>
+  </li>
+
+  <li><strong>Gamma demasiado alto</strong> (en kernels RBF/polinómico)
+    <ul>
+      <li>Cada punto de entrenamiento tiene influencia muy local.</li>
+      <li>La frontera se vuelve muy “serpenteante” y sigue de cerca a cada punto → alta varianza y riesgo de sobreajuste.</li>
+    </ul>
+  </li>
+
+  <li><strong>Síntoma visual típico</strong>
+    <ul>
+      <li>Frontera de decisión muy irregular, con muchas curvas y cambios bruscos para acertar casi todos los puntos de entrenamiento.</li>
+      <li>Accuracy casi perfecto en <em>train</em>, pero peor en <em>test</em> que otros modelos más simples.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>En resumen: un SVM también puede sobreajustar cuando le damos demasiada libertad (C grande, kernel muy flexible, gamma alto). Para detectarlo comparamos siempre el rendimiento en <strong>train</strong> y <strong>test</strong>, y solemos elegir el modelo más simple que funcione bien en test.</p>
+<figure class="media">
+  <img src="https://scikit-learn.org/stable/_images/sphx_glr_plot_rbf_parameters_001.png"
+       alt="Ejemplo de SVM con kernel RBF y distintas combinaciones de C y gamma"
+       width="700">
+  <figcaption>Ejemplo de SVM con kernel RBF: los valores altos de C y gamma generan una frontera muy irregular (sobreajuste).</figcaption>
+</figure>
       <p class="note">
         Más recursos: 
         <a href="https://scikit-learn.org/stable/modules/svm.html" target="_blank" rel="noopener noreferrer">Guía SVM en scikit-learn</a>.
