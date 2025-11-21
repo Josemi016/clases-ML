@@ -115,13 +115,6 @@
         <img src="../img/kmeans.png" alt="Ejemplo de K-Means con centroides y asignaciones" width="1200" height="640" loading="lazy" decoding="async">
         <figcaption>Figura — Ejemplo visual de K-Means (centroides y asignación de puntos)</figcaption>
       </figure>
-      
-      <p class="note">
-        Recurso interactivo:
-        <a href="https://clustering-visualizer.web.app/kmeans" target="_blank" rel="noopener noreferrer">
-          KMeans online
-        </a>
-      </p>
 
       <h3>2.2. Elegir K con “Elbow” (cambio de pendiente)</h3>
       <p>
@@ -129,7 +122,14 @@
         dibuja la curva <code>inercia vs. K</code>. A medida que K crece, la inercia baja; elige el K situado en el
         <strong>“codo”</strong> de la curva, donde la mejora deja de ser significativa (cambio de pendiente).
       </p>
-      
+
+      <p class="note">
+        Recurso interactivo:
+        <a href="https://clustering-visualizer.web.app/kmeans" target="_blank" rel="noopener noreferrer">
+          KMeans online
+        </a>
+      </p>
+
       <!-- HUECO IMAGEN ELBOW -->
       <figure class="media">
         <img src="../img/elbow.JPG" alt="Curva Elbow (cambio de pendiente) para seleccionar K" width="1200" height="640" loading="lazy" decoding="async">
@@ -150,7 +150,7 @@
       <p>
         <strong>G-Means</strong> extiende K-Means para <em>descubrir automáticamente</em> cuántos clústeres hay.
         Parte de pocos grupos y va dividiéndolos si los datos dentro de un clúster <em>no</em> parecen seguir
-        una distribución gaussiana (usa una prueba de normalidad). Así evita fijar K de antemano y
+        una distribución. Así evita fijar K de antemano y
         se adapta cuando hay zonas con distinta densidad.
       </p>
       <h3>Ejemplos</h3>
@@ -166,7 +166,7 @@
 
       <!-- HUECO IMAGEN G-MEANS -->
       <figure class="media">
-        <img src="../img/gmeans-ejemplo.png" alt="Esquema de G-Means dividiendo clústeres según gaussianidad" width="1200" height="640" loading="lazy" decoding="async">
+        <img src="../img/gmeans_clustering.png" alt="Esquema de G-Means dividiendo clústeres" width="1200" height="640" loading="lazy" decoding="async">
         <figcaption>Figura — Ilustración de G-Means y divisiones automáticas.</figcaption>
       </figure>
     </section>
@@ -178,4 +178,3 @@
   <a class="top" href="#top" aria-label="Volver arriba">↑</a>
 </body>
 </html>
-
