@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Clustering — Parte 3</title>
+  <!-- MISMO CSS QUE LAS PARTES ANTERIORES -->
+  <style>
+    :root {
+      --fg: #111827; /* slate-900 */
+      --muted: #4b5563; /* gray-600 */
+      --bg: #ffffff;
+      --brand: #0ea5e9; /* sky-500 */
+      --brand-ink: #075985; /* sky-800 */
+      --card: #f8fafc; /* slate-50 */
+      --code: #111827; /* slate-900 */
+      --border: #e5e7eb; /* gray-200 */
+      /* accent */
+      --h1: #1d4ed8; /* blue-700 */
+      --h2: #6d28d9; /* violet-700 */
+      --h3: #0284c7; /* sky-600 */
+      --section-underline: #dbeafe; /* blue-100 */
+      --divider: #e5e7eb; /* gray-200 */
+    }
+    html, body { background: var(--bg); color: var(--fg); font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+    .page { max-width: 920px; margin: auto; padding: 2rem 1.25rem 6rem; line-height: 1.65; }
+    header h1 { font-size: clamp(1.6rem, 2.5vw + 1rem, 2.4rem); margin: 0 0 .25rem; color: var(--h1); letter-spacing: -0.01em; }
+    header p.lead { color: var(--muted); margin: 0 0 1.25rem; }
+    .breadcrumbs { font-size: .9rem; color: var(--muted); margin-bottom: .5rem; }
+    .breadcrumbs a { color: var(--muted); text-decoration: none; }
+    nav.toc { background: var(--card); border: 1px solid var(--border); border-radius: .75rem; padding: 1rem; margin: 1.25rem 0 2rem; }
+    nav.toc strong { display: block; margin-bottom: .5rem; }
+    nav.toc a { display: block; color: var(--brand-ink); text-decoration: none; padding: .25rem 0; }
+    h2 { margin-top: 2.25rem; font-size: 1.6rem; color: var(--h2); padding-bottom: .35rem; border-bottom: 1px solid var(--section-underline); }
+    h3 { margin-top: 1.5rem; font-size: 1.25rem; color: var(--h3); }
+    .page section + section { border-top: 1px solid var(--divider); margin-top: 2.25rem; padding-top: 2rem; }
+    .note { background: #ecfeff; border-left: 4px solid var(--brand); padding: .75rem 1rem; border-radius: .5rem; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: .75rem; padding: 1rem; }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: .95em; }
+    pre { background: #0b1020; color: #e2e8f0; border-radius: .5rem; padding: 1rem; overflow: auto; }
+    .pill { display: inline-block; border: 1px solid var(--border); border-radius: 999px; padding: .1rem .6rem; font-size: .875rem; color: var(--muted); background: #fff; }
+    details { border: 1px solid var(--border); border-radius: .5rem; padding: .75rem 1rem; background: #fff; }
+    details + details { margin-top: .75rem; }
+    footer { margin-top: 3rem; font-size: .9rem; color: var(--muted); }
+    .top { position: fixed; right: 1rem; bottom: 1rem; background: var(--brand); color: #fff; border-radius: 999px; padding: .6rem .8rem; text-decoration: none; box-shadow: 0 6px 18px rgba(2,132,199,.3); }
+    figure.media { margin: 1rem 0 1.25rem; }
+    figure.media img { max-width: 100%; height: auto; display: block; border-radius: .5rem; }
+    figure.media figcaption { margin-top: .5rem; text-align: center; color: var(--muted); font-size: .95rem; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header id="top">
+      <div class="breadcrumbs">Sistemas de Aprendizaje Automático → Tema 2 → <span class="pill">Parte 3</span></div>
+      <h1>Clustering (aprendizaje no supervisado)</h1>
+      <p class="lead">Definición y ejemplos de Clustering, K-Means (con “Elbow”) y G-Means — con espacios para tus imágenes.</p>
+    </header>
+
+    <nav class="toc" aria-label="Tabla de contenidos">
+      <strong>Índice de la página</strong>
+      <a href="#clustering">1. Clustering</a>
+      <a href="#kmeans">2. K-Means y técnica del “Elbow”</a>
+      <a href="#gmeans">3. G-Means</a>
+    </nav>
+
+    <!-- 1. CLUSTERING -->
+    <section id="clustering">
+      <h2>1. Clustering</h2>
+      <p>
+        El <strong>clustering</strong> es una técnica de <em>aprendizaje no supervisado</em> que agrupa elementos
+        similares cuando <strong>no</strong> tenemos etiquetas. El objetivo es descubrir <em>estructura</em> en los datos:
+        segmentos de clientes, temas en documentos, patrones de comportamiento, etc.
+      </p>
+      <h3>Ejemplos cotidianos</h3>
+      <ul>
+        <li><strong>Marketing:</strong> agrupar clientes por hábitos de compra para campañas personalizadas.</li>
+        <li><strong>Imagen:</strong> segmentar píxeles en regiones (cielo, vegetación, edificio…).</li>
+        <li><strong>Operaciones:</strong> detectar grupos atípicos que apunten a fraudes o anomalías.</li>
+      </ul>
+      <h3>Ventajas y desventajas</h3>
+      <ul>
+        <li><strong>Ventajas:</strong> descubre estructura sin etiquetas; útil como paso exploratorio; reduce complejidad.</li>
+        <li><strong>Desventajas:</strong> la “mejor” partición puede no ser única; sensibilidad a escalado/ruido; requiere criterios para elegir número de grupos.</li>
+      </ul>
+
+      <!-- HUECO IMAGEN CLUSTERING -->
+      <figure class="media">
+        <img src="../img/tipos-clustering.JPG" alt="Ejemplo visual de grupos descubiertos por clustering" width="1200" height="640" loading="lazy" decoding="async">
+        <figcaption>Figura — Ejemplo general de clustering</figcaption>
+      </figure>
+    </section>
+
+    <!-- 2. K-MEANS + ELBOW -->
+    <section id="kmeans" class="card">
+      <h2>2. K-Means y técnica del “Elbow”</h2>
+      <h3>2.1. ¿Qué es K-Means?</h3>
+      <p>
+        <strong>K-Means</strong> agrupa los datos en <em>K</em> clústeres. Parte de centros (<em>centroides</em>) y alterna dos pasos:
+        (1) asignar cada punto al centro más cercano y (2) recalcular los centros como el promedio de sus puntos.
+        Repite hasta que los centros apenas cambian.
+      </p>
+      <h3>Ejemplos</h3>
+      <ul>
+        <li><strong>Retail:</strong> crear 3–6 segmentos de clientes según gasto y frecuencia de compra.</li>
+        <li><strong>IoT:</strong> agrupar lecturas de sensores en estados de funcionamiento (normal/ligero estrés/alto estrés).</li>
+      </ul>
+      <h3>Ventajas y desventajas</h3>
+      <ul>
+        <li><strong>Ventajas:</strong> simple y rápido; escalable; fácil de interpretar cuando los grupos son esféricos y de tamaño similar.</li>
+        <li><strong>Desventajas:</strong> hay que elegir <em>K</em>; sensible a la inicialización y a la escala; no capta clústeres no esféricos ni con densidades muy distintas.</li>
+      </ul>
+
+      <!-- HUECO IMAGEN K-MEANS EJEMPLO -->
+      <figure class="media">
+        <img src="../img/kmeans.png" alt="Ejemplo de K-Means con centroides y asignaciones" width="1200" height="640" loading="lazy" decoding="async">
+        <figcaption>Figura — Ejemplo visual de K-Means (centroides y asignación de puntos)</figcaption>
+      </figure>
+
+      <h3>2.2. Elegir K con “Elbow” (cambio de pendiente)</h3>
+      <p>
+        Calcula la <em>inercia</em> (suma de distancias al centro dentro de cada clúster) para varios valores de <em>K</em> y
+        dibuja la curva <code>inercia vs. K</code>. A medida que K crece, la inercia baja; elige el K situado en el
+        <strong>“codo”</strong> de la curva, donde la mejora deja de ser significativa (cambio de pendiente).
+      </p>
+
+      <p class="note">
+        Recurso interactivo:
+        <a href="https://clustering-visualizer.web.app/kmeans" target="_blank" rel="noopener noreferrer">
+          KMeans online
+        </a>
+      </p>
+
+      <!-- HUECO IMAGEN ELBOW -->
+      <figure class="media">
+        <img src="../img/elbow.JPG" alt="Curva Elbow (cambio de pendiente) para seleccionar K" width="1200" height="640" loading="lazy" decoding="async">
+        <figcaption>Figura — Gráfico de cambio de pendiente (Elbow) para seleccionar K.</figcaption>
+      </figure>
+
+      <!-- HUECO IMAGEN No-ELBOW -->
+      <figure class="media">
+        <img src="../img/no-elbow.JPG" alt="Curva Elbow (cambio de pendiente) para seleccionar K" width="1200" height="640" loading="lazy" decoding="async">
+        <figcaption>Figura — Gráfico de cambio de pendiente (no-Elbow) para seleccionar K.</figcaption>
+      </figure>
+
+    </section>
+
+    <!-- 3. G-MEANS -->
+    <section id="gmeans">
+      <h2>3. G-Means</h2>
+      <p>
+        <strong>G-Means</strong> extiende K-Means para <em>descubrir automáticamente</em> cuántos clústeres hay.
+        Parte de pocos grupos y va dividiéndolos si los datos dentro de un clúster <em>no</em> parecen seguir
+        una distribución gaussiana (usa una prueba de normalidad). Así evita fijar K de antemano y
+        se adapta cuando hay zonas con distinta densidad.
+      </p>
+      <h3>Ejemplos</h3>
+      <ul>
+        <li><strong>Datos geoespaciales:</strong> encontrar “barrios” con densidades distintas sin decidir K previamente.</li>
+        <li><strong>Tráfico/red:</strong> separar patrones de uso (diurno, nocturno, eventos) con tamaños de grupo desiguales.</li>
+      </ul>
+      <h3>Ventajas y desventajas</h3>
+      <ul>
+        <li><strong>Ventajas:</strong> estima K automáticamente; maneja mejor clústeres con tamaños/densidades desiguales.</li>
+        <li><strong>Desventajas:</strong> más costoso que K-Means; depende de la prueba de normalidad y puede dividir de más en presencia de ruido.</li>
+      </ul>
+
+      <!-- HUECO IMAGEN G-MEANS -->
+      <figure class="media">
+        <img src="../img/gmeans-ejemplo.png" alt="Esquema de G-Means dividiendo clústeres según gaussianidad" width="1200" height="640" loading="lazy" decoding="async">
+        <figcaption>Figura — Ilustración de G-Means y divisiones automáticas.</figcaption>
+      </figure>
+    </section>
+
+    <footer>
+      <p>© 2025 — Material docente DigiTech. Jose Miguel Martínez.</p>
+    </footer>
+  </div>
+  <a class="top" href="#top" aria-label="Volver arriba">↑</a>
+</body>
+</html>
