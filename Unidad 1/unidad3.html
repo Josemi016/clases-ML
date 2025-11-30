@@ -604,11 +604,21 @@
         <li>Están diseñadas para trabajar con <strong>datos en forma de matriz</strong> (imágenes, audio espectral, vídeo…).</li>
         <li>Aplican filtros pequeños que recorren la imagen y detectan patrones locales (bordes, texturas, formas).</li>
         <li>Permiten capturar estructura espacial y reducir mucho el número de parámetros.</li>
+        <li>Filtros o kernels: Cada capa convolucional aplica filtros (matrices pequeñas)
+          sobre los datos de entrada para extraer características locales. Por ejemplo, en una imagen, un filtro puede detectar bordes, 
+          texturas o patrones específicos.</li>
+        <li>Al final de la red, suelen incluirse capas totalmente conectadas que integran las características
+        extraídas por las capas convolucionales y generan la salida final (como una clasificación o regresión).</li>
       </ul>
 
       <figure class="media">
         <img src="../img/conv.JPG" alt="Red Convolucional" loading="lazy" decoding="async">
         <figcaption>Red Neuronal Convolucional (CNN).</figcaption>
+      </figure>
+
+      <figure class="media">
+        <img src="../img/conv2.JPG" alt="Red Convolucional" loading="lazy" decoding="async">
+        <figcaption>Ejemplo 2 de Red Neuronal Convolucional (CNN).</figcaption>
       </figure>
 
       <p class="note">
@@ -675,6 +685,7 @@
   <a class="top" href="#top" aria-label="Volver arriba">↑</a>
 </body>
 </html>
+
 
 
 
