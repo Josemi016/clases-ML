@@ -62,8 +62,6 @@
       <a href="#capas-arquitectura">3. Capas y arquitectura básica</a>
       <a href="#pixeles-imagenes">4. Ejemplo de píxeles e imágenes</a>
       <a href="#densas-vs-conv">5. Redes convolucionales</a>
-      <a href="#perceptron-mlp">6. Perceptrón y redes MLP</a>
-      <a href="#flujo-supervisado">7. Flujo básico de un modelo supervisado</a>
     </nav>
 
     <!-- 1 -->
@@ -687,55 +685,6 @@
       </p>
     </section>
 
-    <!-- 6 -->
-    <section id="perceptron-mlp">
-      <h2>6. Perceptrón y redes MLP</h2>
-      <p>
-        Para preparar la primera práctica en Python necesitamos entender dos conceptos: el <strong>perceptrón</strong> y
-        las <strong>redes MLP</strong>.
-      </p>
-
-      <h3>6.1. Perceptrón</h3>
-      <p>
-        El perceptrón es una neurona artificial diseñada para separar datos en dos grupos:
-        por ejemplo, decidir si un punto en 2D pertenece a la clase azul o a la clase naranja.
-      </p>
-      <ul>
-        <li>Toma varias entradas (características) y produce una salida binaria (0/1, sí/no).</li>
-        <li>Se ajusta a partir de ejemplos: si se equivoca, corrige ligeramente sus pesos.</li>
-        <li>Funciona bien cuando las clases son separables “con una línea recta” (o un plano en más dimensiones).</li>
-      </ul>
-
-      <figure class="media">
-        <img src="../img/tema3-perceptron-linea-separadora.JPG" alt="Perceptrón separando dos grupos de puntos mediante una línea" loading="lazy" decoding="async">
-        <figcaption>Espacio para una figura con puntos de dos colores y la línea de decisión aprendida por un perceptrón.</figcaption>
-      </figure>
-
-      <h3>6.2. Redes MLP (Multi-Layer Perceptron)</h3>
-      <p>
-        Un <strong>MLP</strong> es una red neuronal formada por varias capas de perceptrones. Suele tener:
-      </p>
-      <ul>
-        <li>Una capa de entrada.</li>
-        <li>Una o varias <strong>capas ocultas</strong> con neuronas (perceptrones) totalmente conectadas.</li>
-        <li>Una capa de salida que da lugar a la predicción final.</li>
-      </ul>
-      <p>
-        Al añadir capas ocultas, el MLP es capaz de aprender <strong>fronteras de decisión no lineales</strong>, mucho más
-        complejas que una simple línea recta.
-      </p>
-
-      <figure class="media">
-        <img src="../img/tema3-mlp-frontera-curva.JPG" alt="MLP generando una frontera de decisión no lineal" loading="lazy" decoding="async">
-        <figcaption>Espacio para una figura con datos en 2D y una frontera de decisión curva aprendida por un MLP.</figcaption>
-      </figure>
-
-      <div class="note">
-        En la mini-práctica 1 utilizaremos un MLP sencillo para clasificar puntos en 2D
-        y ver cómo cambia el rendimiento al modificar el número de neuronas.
-      </div>
-    </section>
-
     <footer>
       <p>© 2025 — Material docente DigiTech. Jose Miguel Martínez.</p>
     </footer>
@@ -743,6 +692,7 @@
   <a class="top" href="#top" aria-label="Volver arriba">↑</a>
 </body>
 </html>
+
 
 
 
