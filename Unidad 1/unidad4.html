@@ -182,10 +182,10 @@
         </div>
       </div>
 
-      <div class="img-placeholder" role="img" aria-label="Esquema K-Fold">
-        <strong>📌 Esquema recomendado</strong>
-        Dibuja 10 filas (iteraciones) con “bloque de test” moviéndose; ayuda mucho visualmente.
-      </div>
+      <figure class="media">
+        <img src="../img/validacionK.JPG" alt="Validación Cruzada K iteraciones" loading="lazy" decoding="async">
+        <figcaption>Validación Cruzada K iteraciones.</figcaption>
+      </figure>
 
       <pre><code># Idea mental (no es código ejecutable)
 # for fold in folds:
@@ -228,10 +228,10 @@
         <strong>Consejo:</strong> si es clasificación, intenta que el split sea estratificado (misma proporción de clases).
       </div>
 
-      <div class="img-placeholder" role="img" aria-label="Esquema de validación cruzada aleatoria">
-        <strong>🧪 Esquema</strong>
-        Varias iteraciones con “cajitas” diferentes marcadas como test en cada una.
-      </div>
+      <figure class="media">
+        <img src="../img/validacionAleatoria.JPG" alt="Validación Cruzada Aleatoria" loading="lazy" decoding="async">
+        <figcaption>Validación Cruzada Aleatoria.</figcaption>
+      </figure>
     </section>
 
     <!-- 1.1.3 -->
@@ -261,10 +261,10 @@
         </div>
       </div>
 
-      <div class="img-placeholder" role="img" aria-label="Esquema Leave-One-Out">
-        <strong>🧩 Esquema</strong>
-        En cada fila, una sola muestra marcada como test (se va moviendo).
-      </div>
+      <figure class="media">
+        <img src="../img/validacionUnoFuera.JPG" alt="Validación Cruzada Dejando Uno Fuera" loading="lazy" decoding="async">
+        <figcaption>Validación Cruzada Dejando Uno Fuera.</figcaption>
+      </figure>
 
       <p class="note">
         <strong>Regla práctica:</strong> LOO solo cuando el dataset es pequeño y el entrenamiento es barato.
