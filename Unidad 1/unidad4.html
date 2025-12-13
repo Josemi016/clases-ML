@@ -1,0 +1,701 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Redes neuronales y Deep Learning</title>
+  <!-- MISMO CSS QUE LA PARTE 1 / ÁRBOLES -->
+  <style>
+    :root {
+      --fg: #111827; /* slate-900 */
+      --muted: #4b5563; /* gray-600 */
+      --bg: #ffffff;
+      --brand: #0ea5e9; /* sky-500 */
+      --brand-ink: #075985; /* sky-800 */
+      --card: #f8fafc; /* slate-50 */
+      --code: #111827; /* slate-900 */
+      --border: #e5e7eb; /* gray-200 */
+      /* accent */
+      --h1: #1d4ed8; /* blue-700 */
+      --h2: #6d28d9; /* violet-700 */
+      --h3: #0284c7; /* sky-600 */
+      --section-underline: #dbeafe; /* blue-100 */
+      --divider: #e5e7eb; /* gray-200 */
+    }
+    html, body { background: var(--bg); color: var(--fg); font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+    .page { max-width: 920px; margin: auto; padding: 2rem 1.25rem 6rem; line-height: 1.65; }
+    header h1 { font-size: clamp(1.6rem, 2.5vw + 1rem, 2.4rem); margin: 0 0 .25rem; color: var(--h1); letter-spacing: -0.01em; }
+    header p.lead { color: var(--muted); margin: 0 0 1.25rem; }
+    .breadcrumbs { font-size: .9rem; color: var(--muted); margin-bottom: .5rem; }
+    .breadcrumbs a { color: var(--muted); text-decoration: none; }
+    nav.toc { background: var(--card); border: 1px solid var(--border); border-radius: .75rem; padding: 1rem; margin: 1.25rem 0 2rem; }
+    nav.toc strong { display: block; margin-bottom: .5rem; }
+    nav.toc a { display: block; color: var(--brand-ink); text-decoration: none; padding: .25rem 0; }
+    h2 { margin-top: 2.25rem; font-size: 1.6rem; color: var(--h2); padding-bottom: .35rem; border-bottom: 1px solid var(--section-underline); }
+    h3 { margin-top: 1.5rem; font-size: 1.25rem; color: var(--h3); }
+    .page section + section { border-top: 1px solid var(--divider); margin-top: 2.25rem; padding-top: 2rem; }
+    .note { background: #ecfeff; border-left: 4px solid var(--brand); padding: .75rem 1rem; border-radius: .5rem; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: .75rem; padding: 1rem; }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: .95em; }
+    pre { background: #0b1020; color: #e2e8f0; border-radius: .5rem; padding: 1rem; overflow: auto; }
+    .pill { display: inline-block; border: 1px solid var(--border); border-radius: 999px; padding: .1rem .6rem; font-size: .875rem; color: var(--muted); background: #fff; }
+    details { border: 1px solid var(--border); border-radius: .5rem; padding: .75rem 1rem; background: #fff; }
+    details + details { margin-top: .75rem; }
+    footer { margin-top: 3rem; font-size: .9rem; color: var(--muted); }
+    .top { position: fixed; right: 1rem; bottom: 1rem; background: var(--brand); color: #fff; border-radius: 999px; padding: .6rem .8rem; text-decoration: none; box-shadow: 0 6px 18px rgba(2,132,199,.3); }
+    figure.media { margin: 1rem 0 1.25rem; }
+    figure.media img { max-width: 100%; height: auto; display: block; border-radius: .5rem; }
+    figure.media figcaption { margin-top: .5rem; text-align: center; color: var(--muted); font-size: .95rem; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header id="top">
+      <div class="breadcrumbs">Sistemas de Aprendizaje Automático → Tema 3</span></div>
+      <h1>Redes neuronales y Deep Learning</h1>
+    </header>
+
+    <nav class="toc" aria-label="Tabla de contenidos">
+      <strong>Índice de la página</strong>
+      <a href="#intro-rn">1. Introducción</a>
+      <a href="#neurona-artificial">2. Neurona artificial</a>
+      <a href="#capas-arquitectura">3. Capas y arquitectura básica</a>
+      <a href="#pixeles-imagenes">4. Ejemplo de píxeles e imágenes</a>
+      <a href="#densas-vs-conv">5. Redes convolucionales</a>
+    </nav>
+
+    <!-- 1 -->
+    <section id="intro-rn">
+      <h2>1. Introducción</h2>
+      <p>
+        Una <strong>red neuronal artificial</strong> es un modelo de aprendizaje automático inspirado, de forma muy simplificada,
+        en cómo procesa la información el cerebro. En lugar de una neurona biológica, usamos muchas unidades matemáticas muy
+        sencillas conectadas entre sí.
+      </p>
+      <p>
+        El objetivo de una red neuronal es <strong>aprender una relación</strong> entre unos datos de entrada
+        (imágenes, texto, números, sensores…) y una salida deseada (clase, valor numérico, probabilidad, etc.) a partir
+        de ejemplos.
+      </p>
+      <ul>
+        <li><strong>Clasificación:</strong> detectar tumores benignos/malignos, identificar spam, reconocer dígitos escritos a mano.</li>
+        <li><strong>Regresión:</strong> estimar el precio de un piso, prever la demanda eléctrica, predecir el tiempo de entrega de un pedido.</li>
+      </ul>
+      <p>
+        Ejemplos de uso de una red neuronal.
+      </p>
+
+      <figure class="media">
+        <img src="../img/tema3-aplicaciones.JPG" alt="Ejemplos visuales de aplicaciones de redes neuronales" loading="lazy" decoding="async">
+        <figcaption>Ejemplos de uso de redes neuronales.</figcaption>
+      </figure>
+
+      <div class="note">
+        <strong>Idea clave:</strong> no programamos reglas a mano. Le damos muchos ejemplos etiquetados y la red
+        <em>aprende sola</em> qué combinación de parámetros funciona mejor.
+      </div>
+    </section>
+
+    <!-- 2 -->
+    <section id="neurona-artificial">
+      <h2>2. Neurona artificial</h2>
+      <p>
+        La unidad básica de una red es la <strong>neurona artificial</strong>. Podemos verla como una pequeña calculadora que:
+      </p>
+      <ol>
+        <li>Recibe varios <strong>valores de entrada</strong> (características del problema).</li>
+        <li>A cada entrada le da una <strong>importancia</strong> (un peso).</li>
+        <li>Hace una combinación de todas ellas (una especie de media ponderada).</li>
+        <li>Decide si se “activa” o no mediante una <strong>función de activación</strong> (por ejemplo, devuelve un número entre 0 y 1).</li>
+      </ol>
+      <p>
+        Por ejemplo: si pensamos en un sistema que decide si conceder un préstamo, una neurona podría recibir como entradas:
+        <em>ingresos mensuales</em>, <em>antigüedad en la empresa</em> y <em>nivel de deudas</em>. En función de estos valores
+        y de sus pesos, la neurona produce un número que refleja lo “fiable” que le parece ese cliente.
+      </p>
+
+      <figure class="media">
+        <img src="../img/neuronaArtificial.png" alt="Esquema de una neurona artificial con entradas, pesos y salida" loading="lazy" decoding="async">
+        <figcaption>Espacio para un esquema simple de neurona artificial (entradas → combinación → activación → salida).</figcaption>
+      </figure>
+
+      <p class="note">
+        En este tema nos centraremos en la <strong>intuición práctica</strong>: qué hace la neurona y para qué sirve.
+      </p>
+    </section>
+
+    <!-- 3 -->
+    <section id="capas-arquitectura">
+      <h2>3. Capas y arquitectura básica</h2>
+      <p>
+        Una neurona aislada puede resolver problemas muy sencillos (separar en dos grupos “más grandes que” o “más pequeños
+        que” algo). Para tareas reales necesitamos muchas neuronas trabajando juntas en <strong>capas</strong>.
+      </p>
+      <ul>
+        <li>
+          <strong>Capa de entrada:</strong> recibe directamente los datos (p. ej. cada píxel de una imagen, cada variable de un
+          dataset tabular, etc.).
+        </li>
+        <li>
+          <strong>Capas ocultas:</strong> combinan y transforman la información para detectar patrones intermedios.
+        </li>
+        <li>
+          <strong>Capa de salida:</strong> genera la predicción final (clase, probabilidad, valor numérico…).
+        </li>
+      </ul>
+      <p>
+        En un problema de <strong>clasificación binaria</strong> (por ejemplo, “tumor benigno” vs “maligno”), la capa de salida
+        suele tener una única neurona que genera un número entre 0 y 1 interpretado como probabilidad de la clase positiva.
+      </p>
+
+      <figure class="media">
+        <img src="../img/redNeuronalSimple.png" alt="Arquitectura de red neuronal simple" loading="lazy" decoding="async">
+        <figcaption>Arquitectura de red neuronal simple.</figcaption>
+      </figure>
+
+      <div class="note">
+        <strong>Terminología:</strong> cuando hablamos de la <em>arquitectura</em> de una red nos referimos a cuántas
+        capas tiene y cuántas neuronas hay en cada capa.
+      </div>
+    </section>
+    <section id="Funciones de activación">
+  <h3>3.1. Funciones de activación</h2>
+
+  <p>
+    Las <strong>funciones de activación</strong> son las encargadas de decidir cuánto se “activa”
+    una neurona a partir de la suma de entradas que recibe. Sin ellas, una red neuronal sería
+    simplemente una combinación lineal de datos (como una regresión lineal encadenada) y no
+    podría aprender relaciones complejas.
+  </p>
+
+  <p>
+    Dicho de forma sencilla: la función de activación transforma la salida de cada neurona
+    para introducir <strong>no linealidad</strong>, limitar el rango de valores y ayudar a que la red
+    pueda aprender patrones más complejos (curvas, fronteras de decisión complicadas, etc.).
+  </p>
+
+  <h4>Función sigmoide</h3>
+
+  <p>
+    La función <strong>sigmoide</strong> transforma cualquier valor de entrada en un número entre
+    <strong>0 y 1</strong>. Su curva tiene forma de “S” suave: para valores muy negativos se acerca a 0,
+    para valores muy positivos se acerca a 1, y en torno al 0 cambia más rápidamente.
+  </p>
+
+  <!-- Espacio para una imagen pequeña de la sigmoide -->
+  <figure class="media">
+        <img src="../img/sigmoide.png" alt="Función de activación: Sigmoide" loading="lazy" decoding="async">
+        <figcaption>Función de activación: Sigmoide.</figcaption>
+  </figure>
+
+  <h5>¿Cuándo usar la sigmoide?</h4>
+  <ul>
+    <li>
+      Es muy habitual en la <strong>capa de salida</strong> de modelos de
+      <strong>clasificación binaria</strong> (dos clases: sí/no, 0/1…) porque su salida puede
+      interpretarse como una <strong>probabilidad</strong>.
+    </li>
+    <li>
+      También puede usarse en redes pequeñas donde el rango [0, 1] tenga sentido para la tarea.
+    </li>
+  </ul>
+
+  <h5>Inconvenientes de la sigmoide</h4>
+  <ul>
+    <li>
+      Para valores muy grandes o muy pequeños, la curva se “aplana” y el gradiente se vuelve
+      casi cero. Esto provoca el problema de los
+      <strong>gradientes que se desvanecen</strong> (vanishing gradient), lo que dificulta
+      el entrenamiento en redes profundas.
+    </li>
+    <li>
+      Sus salidas están entre 0 y 1, es decir, <strong>no está centrada en 0</strong>. Esto puede
+      hacer que el entrenamiento sea algo más lento frente a otras funciones.
+    </li>
+  </ul>
+
+  <h4>Función ReLU (Rectified Linear Unit)</h3>
+
+  <p>
+    La función <strong>ReLU</strong> es muy sencilla: si la entrada es negativa, devuelve 0; si es
+    positiva, devuelve la propia entrada. Es decir, “corta” todos los valores negativos y deja
+    pasar los positivos tal cual.
+  </p>
+
+  <!-- Espacio para una imagen pequeña de la ReLU -->
+    <figure class="media">
+        <img src="../img/ReLU.png" alt="Función de activación: ReLU" loading="lazy" decoding="async">
+        <figcaption>Función de activación: ReLU.</figcaption>
+  </figure>
+
+  <h5>¿Cuándo usar ReLU?</h4>
+  <ul>
+    <li>
+      Es la función de activación <strong>más utilizada en capas ocultas</strong> de redes profundas
+      (redes densas y convolucionales).
+    </li>
+    <li>
+      Es una buena opción por defecto cuando diseñamos una red neuronal moderna para visión,
+      texto, etc.
+    </li>
+    <li>
+      Al no “aplanarse” tanto como la sigmoide en valores positivos, suele entrenar
+      <strong>más rápido</strong> y con menos problemas de gradientes que se desvanecen.
+    </li>
+  </ul>
+
+  <h5>Inconvenientes de ReLU</h4>
+  <ul>
+    <li>
+      Si una neurona recibe muchas veces valores negativos, su salida será siempre 0 y dejará
+      de actualizarse. Es lo que se conoce como el problema de las
+      <strong>“neuronas muertas”</strong> (dead ReLUs).
+    </li>
+    <li>
+      Su salida no está acotada por arriba (puede crecer mucho), lo que a veces puede hacer
+      que algunas neuronas tengan valores muy grandes y haya que vigilar la estabilidad
+      numérica.
+    </li>
+  </ul>
+
+  <p>
+    En resumen: las funciones de activación son las que dan “vida” a la red. La sigmoide es
+    útil cuando queremos salidas tipo probabilidad en [0, 1], y la ReLU se ha convertido en
+    el estándar en capas ocultas por su sencillez y buen rendimiento en redes profundas.
+  </p>
+
+  <p class="note">
+        Recurso interactivo:
+        <a href="https://playground.tensorflow.org/#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=4,2&seed=0.26847&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false" target="_blank" rel="noopener noreferrer">
+          Red Neuronal Online
+        </a>
+      </p>
+
+</section>
+<section id="montando-red">
+  <h3>3.2. Montando una red neuronal</h3>
+
+  <p>
+    Esta sección es una <strong>guía rápida</strong> para montar redes neuronales con
+    <code>Keras</code> desde cero.
+  </p>
+
+  <div class="note">
+    <strong>Pasos generales:</strong>  
+    1) Entender el problema → 2) Preparar datos → 3) Elegir arquitectura (capas) →  
+    4) Elegir activación, pérdida, optimizador y métricas → 5) Entrenar → 6) Evaluar y ajustar.
+  </div>
+
+  <!-- 3.2.1 Checklist antes de programar -->
+  <h4>3.2.1. Checklist antes de programar</h4>
+
+  <p>Antes de escribir código, responde (aunque sea mentalmente) a estas preguntas:</p>
+  <ul>
+    <li><strong>Tipo de problema:</strong> ¿clasificación binaria (sí/no)?, ¿multiclase (varias categorías)?, ¿regresión (predecir un número)?</li>
+    <li><strong>Cómo está y (la variable objetivo):</strong> ¿es 0/1?, ¿son números enteros 0,1,2…?, ¿es un número real (precio, temperatura…)?</li>
+    <li><strong>Tipo de datos de entrada:</strong> ¿tabla (filas/columnas)?, ¿imágenes?, ¿texto…?</li>
+    <li><strong>Tamaño del dataset:</strong> ¿pocas muestras (cuidado con redes enormes) o muchas muestras?</li>
+    <li><strong>Métrica importante:</strong> ¿te importa más la <em>accuracy</em>, el error medio, la precisión/recall…?</li>
+  </ul>
+
+  <p>
+    Estas respuestas te ayudan a elegir la <strong>capa de salida</strong>, la
+    <strong>función de pérdida</strong> y las <strong>métricas</strong> correctas.
+  </p>
+
+  <!-- 3.2.2 Arquitectura básica y por qué Dense -->
+  <h4>3.2.2. Arquitectura básica: capas</h4>
+
+  <h5>a) ¿Por qué usamos <code>layers.Dense(...)</code> tan a menudo?</h5>
+  <p>
+    Una capa <code>Dense</code> es una capa <strong>totalmente conectada</strong>:
+    cada neurona de la capa se conecta con todas las neuronas de la capa anterior.
+  </p>
+
+  <ul>
+    <li>Otras capas:
+      <ul>
+        <li><code>Conv2D</code>, <code>MaxPooling2D</code> → visión por computador.</li>
+        <li><code>LSTM</code>, <code>GRU</code> → secuencias, texto, series temporales.</li>
+        <li><code>Dropout</code> → regularizar, evitar sobreajuste.</li>
+        <li><code>Flatten</code> → “aplanar” una imagen 2D a vector para conectar con <code>Dense</code>.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h5>b) Capa de salida: qué <code>activation=</code> elegir</h5>
+
+  <p>Regla rápida según el tipo de problema:</p>
+
+  <table class="tabla-simple">
+    <thead>
+      <tr>
+        <th>Tipo de problema</th>
+        <th>Unidades salida</th>
+        <th><code>activation=</code></th>
+        <th>Comentario</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Clasificación binaria (0/1)</td>
+        <td><code>1</code></td>
+        <td><code>"sigmoid"</code></td>
+        <td>Salida entre 0 y 1 → se interpreta como probabilidad.</td>
+      </tr>
+      <tr>
+        <td>Clasificación multiclase (etiquetas 0,1,2…)</td>
+        <td><code>n_clases</code></td>
+        <td><code>"softmax"</code></td>
+        <td>La suma de las salidas es ≈1 → probabilidad por clase.</td>
+      </tr>
+      <tr>
+        <td>Regresión (número real: precio, temperatura…)</td>
+        <td><code>1</code> (o más si hace falta)</td>
+        <td><code>"linear"</code> (sin activación)</td>
+        <td>La salida puede ser cualquier valor (positivo/negativo).</td>
+      </tr>
+      <tr>
+        <td>Regresión siempre positiva</td>
+        <td><code>1</code></td>
+        <td><code>"relu"</code> o <code>"linear"</code></td>
+        <td>Si no quieres valores negativos, puedes usar ReLU.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>
+    En las <strong>capas ocultas</strong>, lo más habitual hoy en día es usar
+    <code>"relu"</code>.
+  </p>
+
+  <!-- 3.2.3 Modelos: Sequential y alternativas -->
+  <h4>3.2.3. Modelos en Keras: <code>Sequential</code> y otros</h4>
+
+  <p>
+    En Keras hay varias formas de definir modelos. Las dos que nos interesan son:
+  </p>
+
+  <ul>
+    <li>
+      <strong><code>keras.Sequential</code></strong>: una pila lineal de capas, donde la salida
+      de una es la entrada de la siguiente.  
+    <p>
+     <strong>Más info:</strong>
+     <a href="https://keras.io/guides/sequential_model/" target="_blank">Guía de modelos Sequential</a>.
+    </p>
+      
+    </li>
+    <li>
+      <strong>API funcional (<code>keras.Model</code>)</strong>: permite modelos más complejos
+      (varias entradas, varias salidas, conexiones que “saltan” capas…).  
+      <p>
+     <strong>Más info:</strong>
+     <a href="https://keras.io/api/models/model/" target="_blank">Documentación de Model</a>.
+    </p>
+    </li>
+  </ul>
+
+  <!-- 3.2.4 Optimizadores -->
+  <h4>3.2.4. Optimizadores: cómo “aprende” la red</h4>
+
+  <p>
+    Un <strong>optimizador</strong> es el algoritmo que decide cómo actualizar los pesos
+    de la red para <strong>minimizar la función de pérdida</strong>.  
+    Por ejemplo, “sube un poco este peso”, “baja aquel”…
+  </p>
+
+  <p>Los más comunes son:</p>
+  <ul>
+    <li>
+      <strong>SGD</strong> (descenso de gradiente): sencillo y clásico.
+      Actúa como motor del entrenamiento del modelo, ajustando iterativamente los pesos 
+      y sesgos internos del modelo para minimizar el error calculado.
+    </li>
+    <li>
+      <strong>Adam</strong>: suele ser el <strong>optimizador por defecto</strong> en muchos
+      proyectos. Se adapta automáticamente al problema, requiere menos ajuste manual
+      y funciona bien en muchos casos.
+    </li>
+  </ul>
+
+  <div class="note">
+    <strong>Regla práctica:</strong>  
+    En este módulo, si no tienes un motivo claro para usar otro, empieza con <code>Adam</code>.
+  </div>
+
+  <p>
+    Para ver <strong>todos</strong> los optimizadores disponibles y sus parámetros:
+    <a href="https://keras.io/api/optimizers/" target="_blank">Documentación de optimizadores de Keras</a>.
+  </p>
+
+  <!-- 3.2.5 Funciones de pérdida -->
+  <h4>3.2.5. Funciones de pérdida (<code>loss</code>): qué está intentando minimizar la red</h4>
+
+  <p>
+    La <strong>función de pérdida</strong> (o <em>loss</em>) es un número que mide “lo mal”
+    que lo está haciendo el modelo. El entrenamiento consiste en intentar
+    <strong>minimizar esa pérdida</strong>.
+  </p>
+
+  <p>Lo más importante es elegir una <code>loss</code> coherente con el tipo de problema:</p>
+
+  <table class="tabla-simple">
+    <thead>
+      <tr>
+        <th>Tipo de problema</th>
+        <th>Salida típica</th>
+        <th><code>loss=</code> más usada</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Clasificación binaria (0/1)</td>
+        <td><code>Dense(1, activation="sigmoid")</code></td>
+        <td><code>"binary_crossentropy"</code></td>
+      </tr>
+      <tr>
+        <td>Clasificación multiclase, etiquetas 0,1,2…</td>
+        <td><code>Dense(n_clases, activation="softmax")</code></td>
+        <td><code>"sparse_categorical_crossentropy"</code></td>
+      </tr>
+      <tr>
+        <td>Clasificación multiclase, etiquetas one-hot</td>
+        <td><code>Dense(n_clases, activation="softmax")</code></td>
+        <td><code>"categorical_crossentropy"</code></td>
+      </tr>
+      <tr>
+        <td>Regresión</td>
+        <td><code>Dense(1, activation="linear")</code></td>
+        <td><code>"mse"</code> (error cuadrático medio) o <code>"mae"</code> (error absoluto medio)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>
+    Para ver la lista completa de pérdidas disponibles:
+    <a href="https://keras.io/api/losses/" target="_blank">Documentación de funciones de pérdida de Keras</a>.
+  </p>
+
+  <!-- 3.2.6 Métricas -->
+  <h4>3.2.6. Métricas (<code>metrics</code>): cómo medimos el rendimiento</h4>
+
+  <p>
+    Las <strong>métricas</strong> sirven para interpretar mejor el rendimiento del modelo.
+    Se parecen a las funciones de pérdida, pero <strong>no se usan para entrenar</strong>,
+    solo para informar (por ejemplo, accuracy, MAE, etc.).
+  </p>
+
+  <ul>
+    <li>
+      <strong>Clasificación:</strong>
+      <ul>
+        <li><code>"accuracy"</code>: porcentaje de aciertos (rápido de entender).</li>
+        <li><code>Precision</code>, <code>Recall</code>, <code>F1</code>: útiles cuando las clases están desbalanceadas.</li>
+        <li><code>AUC</code>: útil para problemas binarios donde importa el ranking de probabilidades.</li>
+      </ul>
+    </li>
+    <li>
+      <strong>Regresión:</strong>
+      <ul>
+        <li><code>"mae"</code>: error absoluto medio (en las mismas unidades que la variable objetivo).</li>
+        <li><code>"mse"</code>: error cuadrático medio (penaliza más los errores grandes).</li>
+      </ul>
+    </li>
+  </ul>
+
+  <p>
+    Más métricas disponibles en:
+    <a href="https://keras.io/api/metrics/" target="_blank">Documentación de métricas de Keras</a>.
+  </p>
+
+  <!-- 3.2.7 Parámetros de entrenamiento importantes -->
+  <h4>3.2.7. Parámetros importantes al entrenar: <code>epochs</code>, <code>batch_size</code>, <code>learning_rate</code>, <code>verbose</code></h4>
+
+  <ul>
+    <li>
+      <strong><code>epochs</code></strong>: cuántas veces pasamos por
+      <strong>todo</strong> el conjunto de entrenamiento.  
+      Pocas epochs → el modelo puede quedarse corto.  
+      Demasiadas → puede sobreajustar.
+    </li>
+    <li>
+      <strong><code>batch_size</code></strong>: número de ejemplos usados en cada
+      actualización de pesos.  
+      Valores típicos: 16, 32, 64…  
+      Batches muy grandes pueden ir más rápido pero consumir más memoria.
+    </li>
+    <li>
+      <strong><code>learning_rate</code></strong> (en el optimizador): tamaño del
+      paso al actualizar los pesos.  
+      Demasiado alto → entrenamiento inestable.  
+      Demasiado bajo → aprendizaje muy lento.
+    </li>
+    <li>
+      <strong><code>verbose</code></strong>: controla cuánto texto se muestra durante el entrenamiento:
+      <ul>
+        <li><code>verbose=0</code>: no muestra nada.</li>
+        <li><code>verbose=1</code>: muestra una barra de progreso por epoch (es el más usado).</li>
+        <li><code>verbose=2</code>: muestra una línea por epoch, más compacto.</li>
+      </ul>
+      No es obligatorio ponerlo: si no lo especificas, por defecto suele ser equivalente a <code>verbose=1</code>.
+    </li>
+  </ul>
+
+   <!-- Cuadro de consejos rápidos -->
+  <div class="tips-box">
+    <p><strong>Guía rápida para empezar:</strong></p>
+    <ul>
+      <li>
+        Para problemas como MNIST / Fashion MNIST:<br>
+        Como consejo, empieza con <strong><code>epochs = 10</code></strong> y <strong><code>batch_size = 32</code></strong>.
+      </li>
+      <li>
+        Si al final de las epochs la <strong>loss de train y val siguen bajando</strong> → prueba subir a
+        <strong>15–20 epochs</strong>.
+      </li>
+      <li>
+        Si la <strong>loss de train baja</strong> pero la <strong>loss de validación sube</strong> → estás sobreajustando:
+        prueba con <strong>menos epochs</strong> o añade regularización.
+      </li>
+      <li>
+        Para comparar, es buena idea repetir el entrenamiento con:<br>
+        <code>batch_size = 16</code> y <code>batch_size = 64</code> y anotar diferencias en tiempo y accuracy.
+      </li>
+    </ul>
+  </div>
+  <!-- 3.2.8 Cosas que sí hacer / cosas que no -->
+  <h4>3.2.8. Buenas prácticas</h4>
+
+    <div class="grid-2">
+    <div>
+      <h5>Buenas</h5>
+      <ul>
+        <li>Escala/normaliza siempre las variables numéricas de entrada.</li>
+        <li>Separa los datos en train / validación / test.</li>
+        <li>Empieza con una arquitectura sencilla y ve complicando poco a poco.</li>
+        <li>Comprueba siempre que tu <code>loss</code> y <code>activation</code> de salida encajan con el tipo de problema.</li>
+        <li>Anota los experimentos: qué has cambiado y qué resultado has obtenido.</li>
+      </ul>
+    </div>
+    <div>
+      <h5>Guía rápida: train / validación / test</h5>
+      <ul>
+        <li>
+          <strong>La red NO separa sola</strong>: tú decides qué es train y qué es test
+          (por ejemplo con <code>train_test_split</code>).
+        </li>
+        <li>
+          Paso típico:
+          <ul>
+            <li> - Primero haz un <strong>80% train / 20% test</strong>.</li>
+            <li> - El <strong>20% test</strong> se guarda para el final (solo <code>model.evaluate()</code>).</li>
+          </ul>
+        </li>
+        <li>
+          Para la <strong>validación</strong> tienes dos opciones:
+          <ul>
+            <li>
+              <em>Explícita</em>: sacar un trozo del train<br>
+              (por ejemplo otro 20% &rarr; 60% train / 20% val / 20% test).
+            </li>
+            <li>
+              <em>Con Keras</em>: usar <code>validation_split=0.2</code> en <code>model.fit()</code> y Keras
+              coge ese 20% del train como validación.
+            </li>
+          </ul>
+        </li>
+        <li>
+          Regla a recordar:<br>
+          <strong>train</strong> &rarr; el modelo aprende pesos.<br>
+          <strong>validación</strong> &rarr; decides arquitectura e hiperparámetros.<br>
+          <strong>test</strong> &rarr; examen final, no se usa para tomar decisiones.
+        </li>
+      </ul>
+    </div>
+  </div>
+    <div>
+      <h5>Malas</h5>
+      <ul>
+        <li>Entrenar y evaluar siempre en el mismo conjunto de datos.</li>
+        <li>Usar <code>softmax</code> o <code>sigmoid</code> en problemas de regresión sin motivo.</li>
+        <li>Cambiar 10 cosas a la vez: luego no sabrás qué ha funcionado.</li>
+        <li>Copiar código de Internet sin entender qué hace cada parámetro.</li>
+        <li>Dejar un modelo entrenando con <code>epochs</code> enormes sin mirar cómo evoluciona la validación.</li>
+      </ul>
+    </div>
+  </div>
+
+    <!-- 4 -->
+    <section id="pixeles-imagenes">
+      <h2>4. Ejemplo de píxeles e imágenes</h2>
+      <p>
+        Un ejemplo clásico para entender las redes neuronales es el reconocimiento de dígitos escritos a mano (0–9).
+        Cada imagen puede verse como una <strong>matriz de píxeles</strong>, donde cada píxel indica si hay tinta (valor alto)
+        o fondo (valor bajo).
+      </p>
+      <p>
+        Si “aplanamos” esa matriz en un vector, cada componente del vector será una entrada de la red. La red debe aprender a
+        detectar trazos, curvas y formas que diferencien, por ejemplo, un <strong>“3”</strong> de un <strong>“8”</strong>.
+      </p>
+
+      <figure class="media">
+        <img src="../img/pixeles.JPG" alt="Dígito representado como matriz de píxeles" loading="lazy" decoding="async">
+        <figcaption>Dígito representado como matriz de píxeles.</figcaption>
+      </figure>
+
+      <p>
+        En modelos más avanzados (redes convolucionales) no solo miramos píxeles sueltos, sino pequeños bloques de la imagen
+        que permiten detectar bordes, esquinas y patrones más complejos.
+      </p>
+    </section>
+
+    <!-- 5 -->
+    <section id="densas-vs-conv" class="card">
+      <h2>5. Redes convolucionales (CNN)</h2>
+      <p>
+        Existen muchos tipos de redes neuronales. Las primeras clases nos centraremos en <strong>redes convolucionales</strong>.
+      </p>
+      <ul>
+        <li>Están diseñadas para trabajar con <strong>datos en forma de matriz</strong> (imágenes, audio espectral, vídeo…).</li>
+        <li>Aplican filtros pequeños que recorren la imagen y detectan patrones locales (bordes, texturas, formas).</li>
+        <li>Permiten capturar estructura espacial y reducir mucho el número de parámetros.</li>
+        <li>Filtros o kernels: Cada capa convolucional aplica filtros (matrices pequeñas)
+          sobre los datos de entrada para extraer características locales. Por ejemplo, en una imagen, un filtro puede detectar bordes, 
+          texturas o patrones específicos.</li>
+        <li>Al final de la red, suelen incluirse capas totalmente conectadas que integran las características
+        extraídas por las capas convolucionales y generan la salida final (como una clasificación o regresión).</li>
+      </ul>
+
+      <figure class="media">
+        <img src="../img/conv.JPG" alt="Red Convolucional" loading="lazy" decoding="async">
+        <figcaption>Red Neuronal Convolucional (CNN).</figcaption>
+      </figure>
+
+      <figure class="media">
+        <img src="../img/conv2.JPG" alt="Red Convolucional" loading="lazy" decoding="async">
+        <figcaption>Ejemplo 2 de Red Neuronal Convolucional (CNN).</figcaption>
+      </figure>
+
+      <p class="note">
+        Recurso interactivo:
+        <a href="https://tensorspace.org/html/playground/index.html" target="_blank" rel="noopener noreferrer">
+          Red convolucionales
+        </a>
+      </p>
+    </section>
+
+    <footer>
+      <p>© 2025 — Material docente DigiTech. Jose Miguel Martínez.</p>
+    </footer>
+  </div>
+  <a class="top" href="#top" aria-label="Volver arriba">↑</a>
+</body>
+</html>
+
+
+
+
+
+
+
