@@ -104,8 +104,10 @@
     <section id="eval">
       <h2>1. Evaluación del modelo</h2>
       <div class="note">
-        <strong>En estos apuntes empezamos en 1.1 (Validación cruzada).</strong>
-        Se omite el apartado previo sobre los parámetros de la matriz de confusión.
+        <p>
+          En esta parte del tema vamos a centrarnos en <strong>cómo evaluar un modelo de Machine Learning de forma fiable</strong>.
+          Entrenar un modelo es solo el primer paso: lo importante es saber si <em>realmente generaliza</em> y si su rendimiento se mantiene cuando cambian los datos.
+        </p>
       </div>
     </section>
 
@@ -122,13 +124,6 @@
       <div class="kpi"><b>score medio</b> (estimación típica)</div>
       <div class="kpi"><b>desviación</b> (qué tan estable es)</div>
 
-      <div class="card" style="margin-top:1rem;">
-        <figure class="media">
-        <img src="../img/tema3-aplicaciones.JPG" alt="Ejemplos visuales de aplicaciones de redes neuronales" loading="lazy" decoding="async">
-        <figcaption>Ejemplos de uso de redes neuronales.</figcaption>
-      </figure>
-      </div>
-
       <h3>¿Por qué se usa?</h3>
       <ul>
         <li><strong>Menos dependencia</strong> del split concreto (mejor estimación).</li>
@@ -143,8 +138,7 @@
       </ul>
 
       <details>
-        <summary><strong>Autoevaluación</strong> (rápida)</summary>
-        <p>Si tu score cambia muchísimo entre folds, ¿qué te está diciendo sobre tu modelo o tus datos?</p>
+        <summary><strong>Autoevaluación</strong> Si tu score cambia muchísimo entre folds, ¿qué te está diciendo sobre tu modelo o tus datos?</summary>
         <ul>
           <li>Puede haber <strong>pocas muestras</strong>.</li>
           <li>Puede haber <strong>mucha varianza</strong> en la distribución (datos heterogéneos).</li>
