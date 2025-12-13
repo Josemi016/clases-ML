@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Técnicas avanzadas y evaluación del modelo</title>
+  <!-- MISMO CSS BASE (unidad3.html) + pequeñas extensiones -->
+  <style>
+:root {
+      --fg: #111827; /* slate-900 */
+      --muted: #4b5563; /* gray-600 */
+      --bg: #ffffff;
+      --brand: #0ea5e9; /* sky-500 */
+      --brand-ink: #075985; /* sky-800 */
+      --card: #f8fafc; /* slate-50 */
+      --code: #111827; /* slate-900 */
+      --border: #e5e7eb; /* gray-200 */
+      /* accent */
+      --h1: #1d4ed8; /* blue-700 */
+      --h2: #6d28d9; /* violet-700 */
+      --h3: #0284c7; /* sky-600 */
+      --section-underline: #dbeafe; /* blue-100 */
+      --divider: #e5e7eb; /* gray-200 */
+    }
+    html, body { background: var(--bg); color: var(--fg); font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+    .page { max-width: 920px; margin: auto; padding: 2rem 1.25rem 6rem; line-height: 1.65; }
+    header h1 { font-size: clamp(1.6rem, 2.5vw + 1rem, 2.4rem); margin: 0 0 .25rem; color: var(--h1); letter-spacing: -0.01em; }
+    header p.lead { color: var(--muted); margin: 0 0 1.25rem; }
+    .breadcrumbs { font-size: .9rem; color: var(--muted); margin-bottom: .5rem; }
+    .breadcrumbs a { color: var(--muted); text-decoration: none; }
+    nav.toc { background: var(--card); border: 1px solid var(--border); border-radius: .75rem; padding: 1rem; margin: 1.25rem 0 2rem; }
+    nav.toc strong { display: block; margin-bottom: .5rem; }
+    nav.toc a { display: block; color: var(--brand-ink); text-decoration: none; padding: .25rem 0; }
+    h2 { margin-top: 2.25rem; font-size: 1.6rem; color: var(--h2); padding-bottom: .35rem; border-bottom: 1px solid var(--section-underline); }
+    h3 { margin-top: 1.5rem; font-size: 1.25rem; color: var(--h3); }
+    .page section + section { border-top: 1px solid var(--divider); margin-top: 2.25rem; padding-top: 2rem; }
+    .note { background: #ecfeff; border-left: 4px solid var(--brand); padding: .75rem 1rem; border-radius: .5rem; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: .75rem; padding: 1rem; }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: .95em; }
+    pre { background: #0b1020; color: #e2e8f0; border-radius: .5rem; padding: 1rem; overflow: auto; }
+    .pill { display: inline-block; border: 1px solid var(--border); border-radius: 999px; padding: .1rem .6rem; font-size: .875rem; color: var(--muted); background: #fff; }
+    details { border: 1px solid var(--border); border-radius: .5rem; padding: .75rem 1rem; background: #fff; }
+    details + details { margin-top: .75rem; }
+    footer { margin-top: 3rem; font-size: .9rem; color: var(--muted); }
+    .top { position: fixed; right: 1rem; bottom: 1rem; background: var(--brand); color: #fff; border-radius: 999px; padding: .6rem .8rem; text-decoration: none; box-shadow: 0 6px 18px rgba(2,132,199,.3); }
+    figure.media { margin: 1rem 0 1.25rem; }
+    figure.media img { max-width: 100%; height: auto; display: block; border-radius: .5rem; }
+    figure.media figcaption { margin-top: .5rem; text-align: center; color: var(--muted); font-size: .95rem; }
+
+    /* Extras añadidos para mantener el mismo look & feel y cubrir clases usadas en los apuntes */
+    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 1rem; align-items: start; }
+    @media (min-width: 780px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+    .tabla-simple { width: 100%; border-collapse: collapse; margin: .75rem 0 1rem; font-size: .95rem; }
+    .tabla-simple th, .tabla-simple td { border: 1px solid var(--border); padding: .5rem .6rem; vertical-align: top; }
+    .tabla-simple th { background: #ffffff; color: var(--brand-ink); text-align: left; }
+    .tips-box { background: #fefce8; border: 1px solid #fde68a; border-left: 4px solid #f59e0b; padding: .75rem 1rem; border-radius: .5rem; margin: 1rem 0; }
+    .img-placeholder { border: 2px dashed var(--border); border-radius: .75rem; padding: 1.25rem; text-align: center; color: var(--muted); background: #fff; }
+    .img-placeholder strong { color: var(--fg); display: block; margin-bottom: .25rem; }
+    .kpi { display: inline-block; background: #fff; border: 1px solid var(--border); border-radius: .75rem; padding: .5rem .75rem; margin: .25rem .25rem 0 0; }
+    .kpi b { color: var(--fg); }
+
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header id="top">
+      <div class="breadcrumbs">Sistemas de Aprendizaje Automático → Tema 3 (continuación)</div>
+      <h1>Técnicas avanzadas y evaluación del modelo</h1>
+      <p class="lead">
+        Apuntes prácticos para: <span class="pill">validación cruzada</span> · <span class="pill">optimización de hiperparámetros</span> ·
+        <span class="pill">desbalanceo</span> · <span class="pill">anomalías</span>
+      </p>
+      <div class="card">
+        <div class="img-placeholder" role="img" aria-label="Espacio para el mapa mental de la unidad">
+          <strong>📌 Espacio para la imagen-resumen del tema</strong>
+          Inserta aquí el mapa mental (prompt) para tener la estructura de un vistazo.
+        </div>
+      </div>
+    </header>
+
+    <nav class="toc" aria-label="Tabla de contenidos">
+      <strong>Índice de la página</strong>
+      <a href="#eval">1. Evaluación del modelo</a>
+      <a href="#cv">1.1. Validación cruzada</a>
+      <a href="#cv-kfold">1.1.1. Validación cruzada de K iteraciones (K-Fold)</a>
+      <a href="#cv-random">1.1.2. Validación cruzada aleatoria</a>
+      <a href="#cv-loo">1.1.3. Validación cruzada dejando uno fuera (Leave-One-Out)</a>
+      <a href="#hpo">2. Optimización de hiperparámetros</a>
+      <a href="#hpo-idea">2.1. Qué se está optimizando</a>
+      <a href="#random-search">2.2. Búsqueda aleatoria (Random Search)</a>
+      <a href="#grid-search">2.3. Búsqueda en cuadrícula (Grid Search)</a>
+      <a href="#hpo-tips">2.4. Consejos prácticos</a>
+      <a href="#imbalance">3. Desbalanceo y anomalías</a>
+      <a href="#imbalance-ds">3.1. Dataset desbalanceado</a>
+      <a href="#undersampling">3.1.1. Submuestreo (Under-sampling)</a>
+      <a href="#oversampling">3.1.2. Sobremuestreo (Over-sampling + SMOTE)</a>
+      <a href="#other-strats">3.1.3. Otras estrategias</a>
+      <a href="#anomalies">3.2. Detección de anomalías</a>
+      <a href="#pca-ae">3.2.1. PCA y autoencoders</a>
+      <a href="#iforest">3.2.2. Isolation Forest</a>
+      <a href="#anomaly-tips">3.2.3. Consejos de evaluación</a>
+    </nav>
+
+    
+    <!-- 1 -->
+    <section id="eval">
+      <h2>1. Evaluación del modelo</h2>
+      <div class="note">
+        <strong>En estos apuntes empezamos en 1.1 (Validación cruzada).</strong>
+        Se omite el apartado previo sobre los parámetros de la matriz de confusión.
+      </div>
+    </section>
+
+    <!-- 1.1 -->
+    <section id="cv">
+      <h2>1.1. Validación cruzada</h2>
+
+      <p>
+        La validación cruzada consiste en <strong>repetir</strong> el proceso de entrenamiento y evaluación
+        sobre <strong>particiones distintas</strong> del mismo dataset. En vez de un solo resultado,
+        obtenemos varios, que suelen resumirse como:
+      </p>
+
+      <div class="kpi"><b>score medio</b> (estimación típica)</div>
+      <div class="kpi"><b>desviación</b> (qué tan estable es)</div>
+
+      <div class="card" style="margin-top:1rem;">
+        <div class="img-placeholder" role="img" aria-label="Diagrama de validación cruzada">
+          <strong>🧩 Diagrama</strong>
+          Inserta un esquema tipo “folds”: cómo se alterna el bloque de test y el resto como train.
+        </div>
+      </div>
+
+      <h3>¿Por qué se usa?</h3>
+      <ul>
+        <li><strong>Menos dependencia</strong> del split concreto (mejor estimación).</li>
+        <li><strong>Comparar modelos</strong> de forma más justa.</li>
+        <li><strong>Seleccionar hiperparámetros</strong> con menos riesgo de “optimizar para un split”.</li>
+      </ul>
+
+      <h3>¿Qué devuelve?</h3>
+      <ul>
+        <li>Un conjunto de puntuaciones (una por iteración / fold).</li>
+        <li>Normalmente reportamos: <strong>media ± desviación</strong>.</li>
+      </ul>
+
+      <details>
+        <summary><strong>Autoevaluación</strong> (rápida)</summary>
+        <p>Si tu score cambia muchísimo entre folds, ¿qué te está diciendo sobre tu modelo o tus datos?</p>
+        <ul>
+          <li>Puede haber <strong>pocas muestras</strong>.</li>
+          <li>Puede haber <strong>mucha varianza</strong> en la distribución (datos heterogéneos).</li>
+          <li>Puede haber <strong>desbalanceo</strong> o clases raras.</li>
+          <li>Puede que el modelo sea <strong>inestable</strong> (muy complejo para el dataset).</li>
+        </ul>
+      </details>
+    </section>
+
+    <!-- 1.1.1 -->
+    <section id="cv-kfold">
+      <h2>1.1.1. Validación cruzada de K iteraciones (K-Fold)</h2>
+
+      <p>
+        En <strong>K-Fold</strong>, dividimos el dataset en <strong>K partes</strong> (folds). Hacemos K iteraciones:
+        en cada una, <strong>1 fold</strong> actúa como test y los otros <strong>K-1</strong> como train.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Lo típico</h3>
+          <ul>
+            <li><strong>K = 5</strong> o <strong>K = 10</strong> (muy común en práctica).</li>
+            <li>En clasificación, usa <strong>StratifiedKFold</strong> para mantener proporciones de clases.</li>
+            <li>Reporta: media y desviación del score.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Ventajas / Desventajas</h3>
+          <ul>
+            <li><strong>+</strong> Estimación más estable que un único split.</li>
+            <li><strong>+</strong> Aprovecha mejor los datos (cada muestra es test una vez).</li>
+            <li><strong>−</strong> Es más lento: entrenas el modelo <strong>K veces</strong>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="img-placeholder" role="img" aria-label="Esquema K-Fold">
+        <strong>📌 Esquema recomendado</strong>
+        Dibuja 10 filas (iteraciones) con “bloque de test” moviéndose; ayuda mucho visualmente.
+      </div>
+
+      <pre><code># Idea mental (no es código ejecutable)
+# for fold in folds:
+#   train = datos - fold
+#   test  = fold
+#   entrenar(modelo, train)
+#   score = evaluar(modelo, test)
+# devolver media(score), std(score)</code></pre>
+    </section>
+
+    <!-- 1.1.2 -->
+    <section id="cv-random">
+      <h2>1.1.2. Validación cruzada aleatoria</h2>
+
+      <p>
+        También llamada <strong>repeated random sub-sampling</strong>.
+        En vez de partir en K bloques fijos, aquí se repite N veces:
+        se hace un split aleatorio train/test, se entrena y se evalúa.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Cuándo tiene sentido</h3>
+          <ul>
+            <li>Cuando quieres controlar el <strong>porcentaje exacto</strong> de train/test en cada repetición.</li>
+            <li>Cuando K-Fold no encaja bien (por ejemplo, por restricciones de tiempo o estructura del dataset).</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Pegas típicas</h3>
+          <ul>
+            <li>Algunas muestras pueden <strong>no salir nunca</strong> en test.</li>
+            <li>Otras pueden salir <strong>muchas veces</strong>.</li>
+            <li>Necesitas fijar <strong>semilla</strong> (reproducibilidad).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note">
+        <strong>Consejo:</strong> si es clasificación, intenta que el split sea estratificado (misma proporción de clases).
+      </div>
+
+      <div class="img-placeholder" role="img" aria-label="Esquema de validación cruzada aleatoria">
+        <strong>🧪 Esquema</strong>
+        Varias iteraciones con “cajitas” diferentes marcadas como test en cada una.
+      </div>
+    </section>
+
+    <!-- 1.1.3 -->
+    <section id="cv-loo">
+      <h2>1.1.3. Validación cruzada dejando uno fuera (Leave-One-Out)</h2>
+
+      <p>
+        En <strong>Leave-One-Out</strong> (LOO) hacemos algo extremo:
+        en cada iteración dejamos <strong>1 sola muestra</strong> como test y entrenamos con todas las demás.
+        Repetimos esto para <strong>cada muestra</strong> del dataset.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Ventajas</h3>
+          <ul>
+            <li>Aprovecha casi todos los datos para entrenar en cada iteración.</li>
+            <li>Puede ser útil cuando tienes <strong>muy pocas muestras</strong>.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Desventajas</h3>
+          <ul>
+            <li>Coste enorme: entrenas el modelo <strong>N veces</strong> (N = nº de muestras).</li>
+            <li>La estimación puede tener <strong>varianza alta</strong> dependiendo del problema.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="img-placeholder" role="img" aria-label="Esquema Leave-One-Out">
+        <strong>🧩 Esquema</strong>
+        En cada fila, una sola muestra marcada como test (se va moviendo).
+      </div>
+
+      <p class="note">
+        <strong>Regla práctica:</strong> LOO solo cuando el dataset es pequeño y el entrenamiento es barato.
+      </p>
+    </section>
+
+    <!-- 2 -->
+    <section id="hpo">
+      <h2>2. Optimización de hiperparámetros</h2>
+
+      <p>
+        Una vez tienes un modelo que “funciona”, la pregunta típica es:
+        <strong>¿cómo me quedo con la mejor versión posible?</strong>
+        Ahí entra la búsqueda de hiperparámetros.
+      </p>
+
+      <div class="card">
+        <h3>Dos conceptos que no hay que mezclar</h3>
+        <ul>
+          <li><strong>Parámetros</strong>: los aprende el modelo entrenando (pesos en redes, coeficientes en regresión, etc.).</li>
+          <li><strong>Hiperparámetros</strong>: los eliges tú antes de entrenar (max_depth, C, nº de vecinos, learning rate, etc.).</li>
+        </ul>
+      </div>
+
+      <div class="tips-box">
+        <p><strong>Idea clave:</strong> optimizar hiperparámetros es “probar configuraciones” y medir cuál generaliza mejor.</p>
+      </div>
+    </section>
+
+    <!-- 2.1 -->
+    <section id="hpo-idea">
+      <h2>2.1. Qué se está optimizando</h2>
+
+      <p>
+        El objetivo típico es maximizar una métrica (por ejemplo accuracy/F1/AUC) o minimizar un error
+        (MAE/MSE) en validación. Para hacerlo bien:
+      </p>
+
+      <ul>
+        <li>Usa <strong>validación cruzada</strong> dentro de la búsqueda (mejor estimación).</li>
+        <li>El conjunto <strong>test</strong> se guarda para el final (examen).</li>
+      </ul>
+
+      <div class="note">
+        <strong>Trampa común:</strong> ajustar hiperparámetros mirando el test es “hacer trampas” sin querer.
+        El test deja de ser un examen si lo usas para decidir.
+      </div>
+
+      <div class="card">
+        <h3>En scikit-learn lo normal</h3>
+        <ul>
+          <li><code>GridSearchCV</code> → recorre una cuadrícula completa.</li>
+          <li><code>RandomizedSearchCV</code> → prueba combinaciones aleatorias.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 2.2 -->
+    <section id="random-search">
+      <h2>2.2. Búsqueda aleatoria (Random Search)</h2>
+
+      <p>
+        Random Search prueba <strong>combinaciones aleatorias</strong> dentro de un espacio de búsqueda.
+        Es especialmente útil cuando:
+      </p>
+
+      <ul>
+        <li>Hay muchos hiperparámetros.</li>
+        <li>No sabes cuáles son los importantes.</li>
+        <li>Quieres <strong>buena solución rápida</strong> con presupuesto limitado.</li>
+      </ul>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Ventajas</h3>
+          <ul>
+            <li><strong>Explora más variedad</strong> con menos intentos.</li>
+            <li>Suele encontrar buenas configuraciones antes que Grid Search cuando hay muchos parámetros.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Desventajas</h3>
+          <ul>
+            <li>No “garantiza” probar todas las combinaciones.</li>
+            <li>Depende del nº de iteraciones (presupuesto).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="img-placeholder" role="img" aria-label="Diagrama Random Search">
+        <strong>🧭 Visual</strong>
+        N puntos repartidos de forma aleatoria en un “cuadrado” de dos hiperparámetros.
+      </div>
+
+      <details>
+        <summary><strong>Autoevaluación (tipo test)</strong></summary>
+        <p>¿Qué técnicas se pueden usar para buscar hiperparámetros óptimos?</p>
+        <ul>
+          <li>○ Random Search</li>
+          <li>○ Grid Search</li>
+          <li>○ Las dos anteriores</li>
+        </ul>
+      </details>
+    </section>
+
+    <!-- 2.3 -->
+    <section id="grid-search">
+      <h2>2.3. Búsqueda en cuadrícula (Grid Search)</h2>
+
+      <p>
+        Grid Search define una <strong>lista finita de valores</strong> para cada hiperparámetro y prueba
+        <strong>todas</strong> las combinaciones. Es útil cuando el espacio es pequeño y razonable.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Ventajas</h3>
+          <ul>
+            <li>Exploración <strong>exhaustiva</strong> del grid.</li>
+            <li>Reproducible y fácil de explicar.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Desventajas</h3>
+          <ul>
+            <li>Puede explotar en coste (combinaciones = producto cartesiano).</li>
+            <li>Si un hiperparámetro no es importante, “gastas” intentos igual.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="img-placeholder" role="img" aria-label="Diagrama Grid Search">
+        <strong>🧱 Visual</strong>
+        Puntos distribuidos en una rejilla (grid) sobre dos hiperparámetros.
+      </div>
+
+      <div class="note">
+        <strong>Regla rápida:</strong> si el grid te sale enorme, o reduces el rango o pasas a Random Search.
+      </div>
+    </section>
+
+    <!-- 2.4 -->
+    <section id="hpo-tips">
+      <h2>2.4. Consejos prácticos</h2>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>1) Empieza pequeño</h3>
+          <ul>
+            <li>Primero encuentra un rango “decente”.</li>
+            <li>Luego afina alrededor de lo que funciona.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>2) Siempre con Pipeline</h3>
+          <ul>
+            <li>Si hay escalado/one-hot/PCA… mételo en <strong>Pipeline</strong>.</li>
+            <li>Evitas <strong>data leakage</strong> (fugas de información).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>3) Métrica correcta según el problema</h3>
+        <p>
+          Si el dataset está desbalanceado, optimizar por accuracy puede llevarte a un modelo inútil.
+          En esos casos suele ser más razonable optimizar por <strong>F1</strong>, <strong>Recall</strong> o <strong>PR-AUC</strong>.
+        </p>
+      </div>
+
+      <div class="note">
+        <strong>Si quieres hacerlo “nivel pro”:</strong> usa <strong>Nested Cross-Validation</strong>
+        (una CV interna para elegir hiperparámetros y otra externa para estimar el rendimiento).
+      </div>
+    </section>
+
+    <!-- 3 -->
+    <section id="imbalance">
+      <h2>3. Desbalanceo y anomalías</h2>
+
+      <p>
+        Aquí entramos en casos “reales”: datos que no están limpios o equilibrados.
+        Dos escenarios típicos:
+      </p>
+      <ul>
+        <li><strong>Dataset desbalanceado</strong>: una clase domina a las demás (fraude, enfermedades raras, spam…).</li>
+        <li><strong>Anomalías</strong>: casos extraños/irregulares sin etiqueta clara (outliers, comportamiento raro, fraude “nuevo”).</li>
+      </ul>
+
+      <div class="img-placeholder" role="img" aria-label="Ejemplo de desbalanceo">
+        <strong>📉 Visual</strong>
+        Barras “muchas transacciones” vs “pocos fraudes” (clase minoritaria).
+      </div>
+    </section>
+
+    <!-- 3.1 -->
+    <section id="imbalance-ds">
+      <h2>3.1. Dataset desbalanceado</h2>
+
+      <p>
+        En un dataset desbalanceado, el modelo puede sacar números “bonitos” sin ser útil.
+        Ejemplo típico: 99% no fraude / 1% fraude. Un modelo que siempre diga “no fraude” tendría 99% de accuracy,
+        pero <strong>no detecta nada</strong>.
+      </p>
+
+      <div class="tips-box">
+        <p><strong>Señales de alarma:</strong></p>
+        <ul>
+          <li>Accuracy alto, pero el modelo falla la clase minoritaria.</li>
+          <li>Recall bajo en la clase importante (fraude/enfermedad).</li>
+          <li>Resultados muy distintos según el split.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Qué hacer antes de tocar el dataset</h3>
+        <ul>
+          <li>Usar <strong>métricas adecuadas</strong>: Precision/Recall/F1, PR-AUC, Balanced Accuracy.</li>
+          <li>Usar <strong>Stratified</strong> split / StratifiedKFold.</li>
+          <li>Mirar errores por clase (no solo un número global).</li>
+        </ul>
+      </div>
+
+      <details>
+        <summary><strong>Autoevaluación (V/F)</strong></summary>
+        <p>
+          Cuando el dataset está desbalanceado, suele ocurrir que obtenemos un alto valor de precisión en la clase minoritaria
+          y un bajo recall en la clase mayoritaria.
+        </p>
+        <ul>
+          <li>○ Verdadero</li>
+          <li>○ Falso</li>
+        </ul>
+        <p class="note">
+          Pista: lo típico es lo contrario: el modelo se “acomoda” en la mayoritaria y suele sufrir en el <strong>recall de la minoritaria</strong>.
+        </p>
+      </details>
+    </section>
+
+    <!-- 3.1.1 -->
+    <section id="undersampling">
+      <h2>3.1.1. Submuestreo (Under-sampling)</h2>
+
+      <p>
+        El submuestreo consiste en <strong>reducir</strong> el número de ejemplos de la clase mayoritaria
+        para equilibrar el dataset.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Ventaja</h3>
+          <p>Rápido y sencillo. Reduce tamaño del dataset → entrenar es más barato.</p>
+        </div>
+        <div class="card">
+          <h3>Desventaja</h3>
+          <p>Puedes perder información importante: tiras casos reales de la clase mayoritaria.</p>
+        </div>
+      </div>
+
+      <div class="img-placeholder" role="img" aria-label="Diagrama under-sampling">
+        <strong>🧱 Diagrama</strong>
+        Bloque grande (mayoritaria) que se reduce hasta igualar el bloque pequeño (minoritaria).
+      </div>
+
+      <p class="note">
+        Útil cuando la clase mayoritaria es enorme y “sobran” ejemplos redundantes.
+      </p>
+    </section>
+
+    <!-- 3.1.2 -->
+    <section id="oversampling">
+      <h2>3.1.2. Sobremuestreo (Over-sampling + SMOTE)</h2>
+
+      <p>
+        El sobremuestreo consiste en <strong>añadir</strong> ejemplos a la clase minoritaria para equilibrar.
+        Hay dos enfoques:
+      </p>
+      <ul>
+        <li><strong>Repetir</strong> ejemplos existentes (simple, pero puede sobreajustar).</li>
+        <li>Generar ejemplos sintéticos (por ejemplo <strong>SMOTE</strong>).</li>
+      </ul>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Ventaja</h3>
+          <p>No pierdes información de la mayoritaria.</p>
+        </div>
+        <div class="card">
+          <h3>Desventaja</h3>
+          <p>Aumenta el dataset; si generas mal, puedes introducir ruido o sobreajuste.</p>
+        </div>
+      </div>
+
+      <div class="img-placeholder" role="img" aria-label="Diagrama over-sampling">
+        <strong>📈 Diagrama</strong>
+        Bloque pequeño (minoritaria) que se “rellena” hasta acercarse al tamaño de la mayoritaria.
+      </div>
+
+      <div class="note">
+        <strong>SMOTE</strong> crea puntos “interpolados” entre ejemplos minoritarios (no solo copias).
+        Si lo usas, hazlo dentro de un Pipeline para evitar fuga de información.
+      </div>
+    </section>
+
+    <!-- 3.1.3 -->
+    <section id="other-strats">
+      <h2>3.1.3. Otras estrategias</h2>
+
+      <div class="card">
+        <h3>Opciones que suelen funcionar bien en práctica</h3>
+        <ul>
+          <li><strong>class_weight</strong> / pesos de clase (penaliza más errores en la minoritaria).</li>
+          <li><strong>Threshold moving</strong>: cambiar el umbral de decisión (por ejemplo 0.3 en vez de 0.5).</li>
+          <li><strong>Ensembles</strong>: Random Forest, Gradient Boosting, XGBoost (a veces con pesos).</li>
+          <li><strong>Recoger más datos</strong> de la minoritaria (si es posible).</li>
+        </ul>
+      </div>
+
+      <div class="tips-box">
+        <p><strong>Checklist rápido en desbalanceo</strong></p>
+        <ul>
+          <li>¿Mi split es estratificado?</li>
+          <li>¿Estoy optimizando una métrica adecuada (F1/Recall/PR-AUC)?</li>
+          <li>¿He probado class_weight antes de “toquetear” el dataset?</li>
+          <li>¿Mi pipeline evita data leakage?</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 3.2 -->
+    <section id="anomalies">
+      <h2>3.2. Detección de anomalías</h2>
+
+      <p>
+        Una <strong>anomalía</strong> es un caso raro o irregular. A veces no tenemos etiqueta “anómalo / normal”,
+        así que usamos técnicas no supervisadas o semi-supervisadas.
+      </p>
+
+      <div class="card">
+        <h3>Casos típicos</h3>
+        <ul>
+          <li>Fraude “nuevo” que no aparece en el histórico.</li>
+          <li>Lecturas de sensores fuera de rango (fallos).</li>
+          <li>Usuarios con comportamiento extraño (bots, ataques).</li>
+        </ul>
+      </div>
+
+      <div class="note">
+        <strong>Ojo:</strong> “anomalía” no siempre significa error: puede ser un caso válido pero raro.
+      </div>
+    </section>
+
+    <!-- 3.2.1 -->
+    <section id="pca-ae">
+      <h2>3.2.1. Reducción dimensional: PCA y autoencoders</h2>
+
+      <p>
+        Una estrategia común es proyectar los datos a un espacio donde sea fácil separar “lo normal” de “lo raro”.
+      </p>
+
+      <h3>PCA (Principal Component Analysis)</h3>
+      <ul>
+        <li>Reduce dimensiones buscando direcciones con mayor varianza.</li>
+        <li>Útil para visualizar (2D/3D) y detectar puntos alejados.</li>
+        <li>Funciona bien como <strong>paso previo</strong> antes de otro detector.</li>
+      </ul>
+
+      <h3>Autoencoders</h3>
+      <ul>
+        <li>Una red neuronal que aprende a reconstruir la entrada.</li>
+        <li>Se entrena con datos “normales” y las anomalías suelen tener <strong>alto error de reconstrucción</strong>.</li>
+        <li>Potente cuando las relaciones son no lineales y hay muchos features.</li>
+      </ul>
+
+      <div class="img-placeholder" role="img" aria-label="Esquema Autoencoder">
+        <strong>🧠 Esquema</strong>
+        Entrada → encoder → espacio latente pequeño → decoder → reconstrucción.
+      </div>
+
+      <p class="note">
+        Si vas a usar autoencoders para anomalías, intenta entrenarlos con datos lo más “limpios” posible (normales).
+      </p>
+    </section>
+
+    <!-- 3.2.2 -->
+    <section id="iforest">
+      <h2>3.2.2. Isolation Forest</h2>
+
+      <p>
+        <strong>Isolation Forest</strong> detecta anomalías aislando puntos mediante particiones aleatorias.
+        Intuición: las anomalías suelen necesitar <strong>menos cortes</strong> para quedar “solas”.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Pros</h3>
+          <ul>
+            <li>Rápido y escalable.</li>
+            <li>Funciona bien con muchos features.</li>
+            <li>No necesita etiquetas (normal/anómalo).</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Contras</h3>
+          <ul>
+            <li>Necesitas estimar <code>contamination</code> (proporción esperada de anomalías).</li>
+            <li>Requiere buen preprocesado (escala/categóricas) si el dataset lo necesita.</li>
+          </ul>
+        </div>
+      </div>
+
+      <pre><code># Mini-ejemplo conceptual (scikit-learn)
+# from sklearn.ensemble import IsolationForest
+# iso = IsolationForest(contamination=0.02, random_state=42)
+# y_pred = iso.fit_predict(X)  # -1 anomalía, 1 normal</code></pre>
+    </section>
+
+    <!-- 3.2.3 -->
+    <section id="anomaly-tips">
+      <h2>3.2.3. Consejos de evaluación</h2>
+
+      <div class="card">
+        <h3>Cómo no engañarte</h3>
+        <ul>
+          <li>Si tienes etiquetas, usa un conjunto de validación y mide <strong>Precision/Recall</strong> de anomalías.</li>
+          <li>Si NO tienes etiquetas, valida con revisión manual o con “casos conocidos”.</li>
+          <li>Cuida el preprocesado: escalado, one-hot, imputación… (y siempre dentro de Pipeline).</li>
+        </ul>
+      </div>
+
+      <div class="note">
+        En detección de anomalías, el objetivo suele ser <strong>priorizar</strong> casos para revisar, no “acertar 100%”.
+        Lo que importa es reducir falsos negativos en lo crítico y que la lista de alertas sea manejable.
+      </div>
+    </section>
+
+    <footer>
+      <p>© 2025 — Material docente DigiTech. Jose Miguel Martínez.</p>
+    </footer>
+  </div>
+
+  <a class="top" href="#top" aria-label="Volver arriba">↑</a>
+</body>
+</html>
