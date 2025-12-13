@@ -70,10 +70,6 @@
         Apuntes prácticos para: <span class="pill">validación cruzada</span> · <span class="pill">optimización de hiperparámetros</span> ·
         <span class="pill">desbalanceo</span> · <span class="pill">anomalías</span>
       </p>
-      <figure class="card">
-        <img src="../img/SAA05_MapaConceptual.png" alt="Mapa Conceptual" loading="lazy" decoding="async">
-        <figcaption>Mapa Conceptual.</figcaption>
-      </figure>
     </header>
 
     <nav class="toc" aria-label="Tabla de contenidos">
@@ -91,8 +87,7 @@
       <a href="#imbalance">3. Desbalanceo y anomalías</a>
       <a href="#imbalance-ds">3.1. Dataset desbalanceado</a>
       <a href="#undersampling">3.1.1. Submuestreo (Under-sampling)</a>
-      <a href="#oversampling">3.1.2. Sobremuestreo (Over-sampling + SMOTE)</a>
-      <a href="#other-strats">3.1.3. Otras estrategias</a>
+      <a href="#oversampling">3.1.2. Sobremuestreo (Over-sampling)</a>
       <a href="#anomalies">3.2. Detección de anomalías</a>
       <a href="#pca-ae">3.2.1. PCA y autoencoders</a>
       <a href="#iforest">3.2.2. Isolation Forest</a>
@@ -347,21 +342,6 @@
           </ul>
         </div>
       </div>
-
-      <div class="img-placeholder" role="img" aria-label="Diagrama Random Search">
-        <strong>🧭 Visual</strong>
-        N puntos repartidos de forma aleatoria en un “cuadrado” de dos hiperparámetros.
-      </div>
-
-      <details>
-        <summary><strong>Autoevaluación (tipo test)</strong></summary>
-        <p>¿Qué técnicas se pueden usar para buscar hiperparámetros óptimos?</p>
-        <ul>
-          <li>○ Random Search</li>
-          <li>○ Grid Search</li>
-          <li>○ Las dos anteriores</li>
-        </ul>
-      </details>
     </section>
 
     <!-- 2.3 -->
@@ -384,20 +364,29 @@
         <div class="card">
           <h3>Desventajas</h3>
           <ul>
-            <li>Puede explotar en coste (combinaciones = producto cartesiano).</li>
+            <li>Puede explotar en coste.</li>
             <li>Si un hiperparámetro no es importante, “gastas” intentos igual.</li>
           </ul>
         </div>
       </div>
 
-      <div class="img-placeholder" role="img" aria-label="Diagrama Grid Search">
-        <strong>🧱 Visual</strong>
-        Puntos distribuidos en una rejilla (grid) sobre dos hiperparámetros.
-      </div>
+      <figure class="media">
+        <img src="../img/busquedasAleatorias.JPG" alt="Búsquedas" loading="lazy" decoding="async">
+        <figcaption>Búsquedas.</figcaption>
+      </figure>
 
       <div class="note">
         <strong>Regla rápida:</strong> si el grid te sale enorme, o reduces el rango o pasas a Random Search.
       </div>
+      <details>
+        <summary><strong>Autoevaluación (tipo test)</strong></summary>
+        <p>¿Qué técnicas se pueden usar para buscar hiperparámetros óptimos?</p>
+        <ul>
+          <li>○ Random Search</li>
+          <li>○ Grid Search</li>
+          <li>○ Las dos anteriores</li>
+        </ul>
+      </details>
     </section>
 
     <!-- 2.4 -->
@@ -416,7 +405,6 @@
           <h3>2) Siempre con Pipeline</h3>
           <ul>
             <li>Si hay escalado/one-hot/PCA… mételo en <strong>Pipeline</strong>.</li>
-            <li>Evitas <strong>data leakage</strong> (fugas de información).</li>
           </ul>
         </div>
       </div>
@@ -425,13 +413,8 @@
         <h3>3) Métrica correcta según el problema</h3>
         <p>
           Si el dataset está desbalanceado, optimizar por accuracy puede llevarte a un modelo inútil.
-          En esos casos suele ser más razonable optimizar por <strong>F1</strong>, <strong>Recall</strong> o <strong>PR-AUC</strong>.
+          En esos casos suele ser más razonable optimizar por <strong>F1</strong>, <strong>Recall</strong>.
         </p>
-      </div>
-
-      <div class="note">
-        <strong>Si quieres hacerlo “nivel pro”:</strong> usa <strong>Nested Cross-Validation</strong>
-        (una CV interna para elegir hiperparámetros y otra externa para estimar el rendimiento).
       </div>
     </section>
 
@@ -448,10 +431,10 @@
         <li><strong>Anomalías</strong>: casos extraños/irregulares sin etiqueta clara (outliers, comportamiento raro, fraude “nuevo”).</li>
       </ul>
 
-      <div class="img-placeholder" role="img" aria-label="Ejemplo de desbalanceo">
-        <strong>📉 Visual</strong>
-        Barras “muchas transacciones” vs “pocos fraudes” (clase minoritaria).
-      </div>
+      <figure class="media">
+        <img src="../img/desbalanceo.jpg" alt="Clases Desbalanceadas" loading="lazy" decoding="async">
+        <figcaption>Clases Desbalanceadas</figcaption>
+      </figure>
     </section>
 
     <!-- 3.1 -->
@@ -459,7 +442,7 @@
       <h2>3.1. Dataset desbalanceado</h2>
 
       <p>
-        En un dataset desbalanceado, el modelo puede sacar números “bonitos” sin ser útil.
+        En un dataset desbalanceado, el modelo puede sacar buenas clasificaciones pero sin ser útil.
         Ejemplo típico: 99% no fraude / 1% fraude. Un modelo que siempre diga “no fraude” tendría 99% de accuracy,
         pero <strong>no detecta nada</strong>.
       </p>
@@ -476,7 +459,7 @@
       <div class="card">
         <h3>Qué hacer antes de tocar el dataset</h3>
         <ul>
-          <li>Usar <strong>métricas adecuadas</strong>: Precision/Recall/F1, PR-AUC, Balanced Accuracy.</li>
+          <li>Mirar <strong>métricas adecuadas</strong>: Precision/Recall/F1, PR-AUC, Balanced Accuracy.</li>
           <li>Usar <strong>Stratified</strong> split / StratifiedKFold.</li>
           <li>Mirar errores por clase (no solo un número global).</li>
         </ul>
@@ -514,13 +497,8 @@
         </div>
         <div class="card">
           <h3>Desventaja</h3>
-          <p>Puedes perder información importante: tiras casos reales de la clase mayoritaria.</p>
+          <p>Puedes perder información importante porque tiras casos reales de la clase mayoritaria.</p>
         </div>
-      </div>
-
-      <div class="img-placeholder" role="img" aria-label="Diagrama under-sampling">
-        <strong>🧱 Diagrama</strong>
-        Bloque grande (mayoritaria) que se reduce hasta igualar el bloque pequeño (minoritaria).
       </div>
 
       <p class="note">
@@ -552,40 +530,10 @@
         </div>
       </div>
 
-      <div class="img-placeholder" role="img" aria-label="Diagrama over-sampling">
-        <strong>📈 Diagrama</strong>
-        Bloque pequeño (minoritaria) que se “rellena” hasta acercarse al tamaño de la mayoritaria.
-      </div>
-
-      <div class="note">
-        <strong>SMOTE</strong> crea puntos “interpolados” entre ejemplos minoritarios (no solo copias).
-        Si lo usas, hazlo dentro de un Pipeline para evitar fuga de información.
-      </div>
-    </section>
-
-    <!-- 3.1.3 -->
-    <section id="other-strats">
-      <h2>3.1.3. Otras estrategias</h2>
-
-      <div class="card">
-        <h3>Opciones que suelen funcionar bien en práctica</h3>
-        <ul>
-          <li><strong>class_weight</strong> / pesos de clase (penaliza más errores en la minoritaria).</li>
-          <li><strong>Threshold moving</strong>: cambiar el umbral de decisión (por ejemplo 0.3 en vez de 0.5).</li>
-          <li><strong>Ensembles</strong>: Random Forest, Gradient Boosting, XGBoost (a veces con pesos).</li>
-          <li><strong>Recoger más datos</strong> de la minoritaria (si es posible).</li>
-        </ul>
-      </div>
-
-      <div class="tips-box">
-        <p><strong>Checklist rápido en desbalanceo</strong></p>
-        <ul>
-          <li>¿Mi split es estratificado?</li>
-          <li>¿Estoy optimizando una métrica adecuada (F1/Recall/PR-AUC)?</li>
-          <li>¿He probado class_weight antes de “toquetear” el dataset?</li>
-          <li>¿Mi pipeline evita data leakage?</li>
-        </ul>
-      </div>
+      <figure class="media">
+        <img src="../img/ImbalancedClasses.jpg" alt="Submuestreo y Sobremuestreo" loading="lazy" decoding="async">
+        <figcaption>Submuestreo y Sobremuestreo</figcaption>
+      </figure>
     </section>
 
     <!-- 3.2 -->
