@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini-Hackathon Fraude - Equipos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+            min-height: 100vh;
+            padding: 30px;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        header p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+        }
+        .teams-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        .team-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+        .team-card:hover {
+            transform: translateY(-5px);
+        }
+        .team-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid;
+        }
+        .team-icon {
+            font-size: 2.5rem;
+        }
+        .team-title h2 {
+            font-size: 1.4rem;
+            margin-bottom: 3px;
+        }
+        .team-title .members {
+            font-size: 1rem;
+            color: #666;
+            font-weight: 500;
+        }
+        .team-content h3 {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .team-content p {
+            font-size: 1.05rem;
+            line-height: 1.5;
+            color: #444;
+            margin-bottom: 15px;
+        }
+        .team-focus {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px 15px;
+        }
+        .team-focus strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        /* Team colors */
+        .team-ml .team-header { border-color: #3498db; }
+        .team-ml .team-icon { color: #3498db; }
+        .team-ml .team-title h2 { color: #2980b9; }
+        
+        .team-riesgos .team-header { border-color: #9b59b6; }
+        .team-riesgos .team-icon { color: #9b59b6; }
+        .team-riesgos .team-title h2 { color: #8e44ad; }
+        
+        .team-ops .team-header { border-color: #27ae60; }
+        .team-ops .team-icon { color: #27ae60; }
+        .team-ops .team-title h2 { color: #229954; }
+        
+        .team-direccion .team-header { border-color: #e67e22; }
+        .team-direccion .team-icon { color: #e67e22; }
+        .team-direccion .team-title h2 { color: #d35400; }
+
+        .context-box {
+            background: white;
+            border-radius: 16px;
+            padding: 25px 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 25px;
+        }
+        .context-box h2 {
+            color: #1e3a5f;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        .context-box p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #444;
+        }
+        .context-box .highlight {
+            background: #fff3cd;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .footer-info {
+            background: rgba(255,255,255,0.95);
+            border-radius: 16px;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .footer-item {
+            text-align: center;
+        }
+        .footer-item .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e3a5f;
+        }
+        .footer-item .label {
+            font-size: 0.95rem;
+            color: #666;
+        }
+
+        @media (max-width: 900px) {
+            .teams-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 Mini-Hackathon: Detección de Fraude</h1>
+            <p>Organizaos en equipos para mañana</p>
+        </header>
+
+        <div class="context-box">
+            <h2>📋 El problema</h2>
+            <p>
+                Sois un <strong>banco</strong> que quiere detectar fraude en compras online. 
+                Tendréis que decidir <span class="highlight">qué hacer con cada transacción</span>: 
+                aprobarla, pedir verificación, revisarla manualmente o rechazarla. 
+                El reto es <strong>pillar el fraude sin molestar a los clientes buenos</strong>.
+            </p>
+        </div>
+
+        <div class="teams-grid">
+            <div class="team-card team-ml">
+                <div class="team-header">
+                    <span class="team-icon">🔬</span>
+                    <div class="team-title">
+                        <h2>ML</h2>
+                        <span class="members">👥 3 personas</span>
+                    </div>
+                </div>
+                <div class="team-content">
+                    <h3>¿Qué hacéis?</h3>
+                    <p>Analizáis los datos y proponéis cómo calcular el "riesgo" de cada transacción. Sois los técnicos.</p>
+                    <div class="team-focus">
+                        <strong>Clave:</strong>
+                        "¿Qué señales en los datos indican que algo es fraude?"
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-card team-riesgos">
+                <div class="team-header">
+                    <span class="team-icon">⚖️</span>
+                    <div class="team-title">
+                        <h2>Riesgos</h2>
+                        <span class="members">👥 3 personas</span>
+                    </div>
+                </div>
+                <div class="team-content">
+                    <h3>¿Qué hacéis?</h3>
+                    <p>Vigiláis que el sistema sea justo y no discrimine. Definís las "líneas rojas" que no se pueden cruzar.</p>
+                    <div class="team-focus">
+                        <strong>Clave:</strong>
+                        "¿Qué podría salir mal y meternos en un problema legal o de reputación?"
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-card team-ops">
+                <div class="team-header">
+                    <span class="team-icon">🛠️</span>
+                    <div class="team-title">
+                        <h2>Operaciones</h2>
+                        <span class="members">👥 4 personas</span>
+                    </div>
+                </div>
+                <div class="team-content">
+                    <h3>¿Qué hacéis?</h3>
+                    <p>Diseñáis cómo funciona el proceso en el día a día: qué pasa cuando llega una alerta, quién la revisa, qué mensaje ve el cliente.</p>
+                    <div class="team-focus">
+                        <strong>Clave:</strong>
+                        "¿Cómo gestionamos esto sin colapsar y sin enfadar al cliente?"
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-card team-direccion">
+                <div class="team-header">
+                    <span class="team-icon">📊</span>
+                    <div class="team-title">
+                        <h2>Negocio</h2>
+                        <span class="members">👥 3 personas</span>
+                    </div>
+                </div>
+                <div class="team-content">
+                    <h3>¿Qué hacéis?</h3>
+                    <p>Definís los objetivos del proyecto, los límites de presupuesto/tiempo, y tomáis las decisiones finales cuando hay conflicto.</p>
+                    <div class="team-focus">
+                        <strong>Clave:</strong>
+                        "¿Cómo medimos si esto ha funcionado? ¿Qué no podemos permitirnos?"
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-info">
+            <div class="footer-item">
+                <div class="number">13</div>
+                <div class="label">personas</div>
+            </div>
+            <div class="footer-item">
+                <div class="number">4</div>
+                <div class="label">equipos</div>
+            </div>
+            <div class="footer-item">
+                <div class="number">3</div>
+                <div class="label">sprints</div>
+            </div>
+            
+        </div>
+    </div>
+</body>
+</html>
